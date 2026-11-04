@@ -3,9 +3,9 @@ using UnityEngine;
 public class SecondOrderFollower : MonoBehaviour {
     [SerializeField] private Transform target;
     [SerializeField] private DynamicsParams dynamics = new DynamicsParams(3f, 0.6f, 0f);
-
     private V3SecondOrderDynamics positionDynamics;
     private Vector3 previousTargetPosition;
+
 
     private void Start() {
         if (target == null) {
@@ -14,6 +14,7 @@ public class SecondOrderFollower : MonoBehaviour {
         }
 
         previousTargetPosition = target.position;
+        Debug.Log($"Initial target position: {previousTargetPosition}");
         positionDynamics = new V3SecondOrderDynamics(dynamics.f, dynamics.z, dynamics.r, transform.position);
     }
 
@@ -29,6 +30,7 @@ public class SecondOrderFollower : MonoBehaviour {
 #if UNITY_EDITOR
     private void OnValidate() {
         if (!Application.isPlaying) return;
+        Debug.Log(positionDynamics);
         positionDynamics.ChangeParameters(Mathf.Max(0.01f, dynamics.f), dynamics.z, dynamics.r);
     }
 #endif

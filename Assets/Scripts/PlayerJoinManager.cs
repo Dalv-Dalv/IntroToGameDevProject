@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,7 @@ public class PlayerJoinManager : MonoBehaviour {
     [SerializeField] private int maxPlayers;
     private int playersJoined;
 
+    public Action<GameObject> OnPlayerJoined;
     private void Update() {
         if (playersJoined >= maxPlayers) return;
 
@@ -37,6 +39,7 @@ public class PlayerJoinManager : MonoBehaviour {
         playersJoined++;
         
         Debug.Log($"Player {playersJoined} joined using {schemeName}!");
+        OnPlayerJoined.Invoke(pi.gameObject);
     }
 
     private bool IsDeviceAlreadyPaired(InputDevice device) {
