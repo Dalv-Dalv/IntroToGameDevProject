@@ -30,6 +30,11 @@ public class SecondOrderFollower : MonoBehaviour {
 #if UNITY_EDITOR
     private void OnValidate() {
         if (!Application.isPlaying) return;
+        if (positionDynamics == null)
+        {
+            Debug.LogWarning("Position dynamics is null. Ensure that the game is running and the Start method has been called.", this);
+            return;
+        }
         Debug.Log(positionDynamics);
         positionDynamics.ChangeParameters(Mathf.Max(0.01f, dynamics.f), dynamics.z, dynamics.r);
     }

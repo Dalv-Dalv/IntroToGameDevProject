@@ -29,6 +29,11 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
     void Awake()
     {
         GenerateStaticProxyAutomatically();
+        playerJoinManager = FindAnyObjectByType<PlayerJoinManager>();
+        if (playerJoinManager != null)
+        {
+            playerJoinManager.OnPlayerJoined += HandlePlayerJoined;
+        }
     }
 
     private void GenerateStaticProxyAutomatically()
@@ -61,11 +66,7 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
 
     void Start()
     {
-        playerJoinManager = FindFirstObjectByType<PlayerJoinManager>();
-        if (playerJoinManager != null)
-        {
-            playerJoinManager.OnPlayerJoined += HandlePlayerJoined;
-        }
+       
     }
 
     private void OnDestroy()

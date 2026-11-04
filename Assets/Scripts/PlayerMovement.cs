@@ -88,6 +88,7 @@ public class PlayerMovement : MonoBehaviour {
 #if UNITY_EDITOR
     private void OnValidate() {
         if (!Application.isPlaying) return;
+        if (velocityDynamics == null) return;
         velocityDynamics.ChangeParameters(Mathf.Max(0.01f, dynamics.f), dynamics.z, dynamics.r);
     }
 #endif

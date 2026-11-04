@@ -10,13 +10,15 @@ public class PlayerJoinManager : MonoBehaviour {
 
     public Action<GameObject> OnPlayerJoined;
     private void Update() {
+        //Debug.Log(playersJoined);
         if (playersJoined >= maxPlayers) return;
 
         foreach (var gamepad in Gamepad.all)
             if (gamepad.startButton.wasPressedThisFrame && !IsDeviceAlreadyPaired(gamepad))
                 JoinPlayer("Gamepad", gamepad);
-
+        
         var kb = Keyboard.current;
+        
         if (kb == null) return;
         
         if (kb.spaceKey.wasPressedThisFrame && !IsKeyboardSchemeActive("KeyboardP1"))
@@ -39,7 +41,7 @@ public class PlayerJoinManager : MonoBehaviour {
         playersJoined++;
         
         Debug.Log($"Player {playersJoined} joined using {schemeName}!");
-        OnPlayerJoined.Invoke(pi.gameObject);
+        OnPlayerJoined?.Invoke(pi.gameObject);
     }
 
     private bool IsDeviceAlreadyPaired(InputDevice device) {

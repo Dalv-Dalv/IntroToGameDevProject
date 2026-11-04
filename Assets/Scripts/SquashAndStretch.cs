@@ -52,6 +52,7 @@ public class SquashAndStretch : MonoBehaviour {
 #if UNITY_EDITOR
     private void OnValidate() {
         if (!Application.isPlaying) return;
+        if (scaleDynamics == null) return;
         scaleDynamics.ChangeParameters(Mathf.Max(0.01f, dynamics.f), dynamics.z, dynamics.r);
     }
 #endif
