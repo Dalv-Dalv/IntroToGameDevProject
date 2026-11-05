@@ -25,4 +25,6 @@ public class V2SecondOrderDynamics {
         yd += dt * (x + k3 * xd - y - k1 * yd) / k2Stable;
         return y;
     }
+
+
 }

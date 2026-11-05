@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playerInput: {fileID: 3678568568256947458}
-  playerMovementScript: {fileID: 2261792084775425001}
+  playerMovement: {fileID: 2261792084775425001}
   interactRadius: 1.96
   interactableLayer:
     serializedVersion: 2

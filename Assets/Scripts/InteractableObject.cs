@@ -1,29 +1,20 @@
 using UnityEngine;
 
-public class InteractableObject : MonoBehaviour
+public class InteractableObject : SpaceshipModule
 {
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private Rigidbody2D rb;
-
-    private PlayerInteract posseser;
-    public virtual void Interact()
+    public override void SendInput(Vector2 directionalInput)
     {
-       
-    }
-
-    public virtual void Control(Vector2 direction)
-    {
-        if (rb != null)
+        if (spaceshipController != null)
         {
-            rb.AddForce(direction * speed, ForceMode2D.Force);
+            spaceshipController.SetMoveInput(directionalInput);
         }
     }
 
-    public virtual void StopControl()
+    protected override void OnOperatorExited(PlayerInteract player)
     {
-        if (rb != null)
+        if (spaceshipController != null)
         {
-            rb.linearVelocity = Vector2.zero;
+            spaceshipController.SetMoveInput(Vector2.zero);
         }
     }
 }

@@ -4,16 +4,15 @@ using UnityEngine;
 public class PlayerAndSpaceshipSync : MonoBehaviour
 {
     [Header("Setari Interior (De pe aceasta nava)")]
-    [Tooltip("Trage aici obiectul copil care contine toate collider-ele interioare ale navei")]
+    [Tooltip("Trage aici obiectul copil 'Interior' care contine platformele, peretii si consolele")]
     [SerializeField] private Transform interiorCollidersRoot;
 
-    [Tooltip("Obiect gol pus in InteriorColliders unde vrei sa apara jucatorii")]
+    [Tooltip("Optional: Obiect gol pus in Interior unde vrei sa apara jucatorii")]
     [SerializeField] private Transform localSpawnPoint;
 
-    // Acestea se genereaza 100% automat din cod pentru fiecare nava!
     private Transform staticInteriorTransform;
     private Vector3 generatedSpawnPosition;
-    private static int shipInstanceCounter = 0; // Ca sa nu se suprapuna daca ai mai multe nave in scena
+    private static int shipInstanceCounter = 0;
 
     private class SyncedPlayer
     {
@@ -38,17 +37,23 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
 
     private void GenerateStaticProxyAutomatically()
     {
+        if (interiorCollidersRoot == null)
+        {
+            Debug.LogError("Nu ai asignat 'Interior Colliders Root' pe PlayerAndSpaceshipSync!", this);
+            return;
+        }
+
         shipInstanceCounter++;
 
-        // 1. Calculam o pozitie departe sub harta (ex: Nava 1 la Y:-5000, Nava 2 la Y:-5500)
+        // 1. Hidden position for the static ship (where players will physically be)
         Vector3 hiddenPosition = new Vector3(0, -5000f - (shipInstanceCounter * 500f), 0);
 
-        // 2. Clonam automat doar collider-ele interioare ale acestei nave si le ducem jos
+        // 2. Clone the interior for static physics
         GameObject staticCopy = Instantiate(interiorCollidersRoot.gameObject, hiddenPosition, Quaternion.identity);
-        staticCopy.name = $"{gameObject.name}_AutoStaticInterior";
+        staticCopy.name = $"{gameObject.name}_StaticPhysicsInterior";
         staticInteriorTransform = staticCopy.transform;
 
-        // 3. Calculam unde pica SpawnPoint-ul in copia statica
+        // 3. Calculate spawn position in static copy
         if (localSpawnPoint != null)
         {
             Vector3 relativeSpawn = interiorCollidersRoot.InverseTransformPoint(localSpawnPoint.position);
@@ -59,14 +64,32 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
             generatedSpawnPosition = staticInteriorTransform.position;
         }
 
-        // 4. DEZACTIVAM collider-ele interioare de pe nava care zboara!
-        // (Nava din spatiu nu mai are nevoie de peretii interiori, doar de collider-ul exterior pt asteroizi)
-        interiorCollidersRoot.gameObject.SetActive(false);
-    }
+        // 4. Link static modules to their visual counterparts on the moving ship
+        SpaceshipController shipController = GetComponent<SpaceshipController>();
+        SpaceshipModule[] visualModules = interiorCollidersRoot.GetComponentsInChildren<SpaceshipModule>(true);
+        SpaceshipModule[] staticModules = staticCopy.GetComponentsInChildren<SpaceshipModule>(true);
 
-    void Start()
-    {
-       
+        for (int i = 0; i < staticModules.Length; i++)
+        {
+            Transform visualCounterpart = (i < visualModules.Length) ? visualModules[i].transform : null;
+            staticModules[i].Initialize(shipController, visualCounterpart);
+        }
+
+        // 5. Disable interactive modules and their triggers on the moving visual ship
+        foreach (var visualModule in visualModules)
+        {
+            visualModule.enabled = false;
+            if (visualModule.TryGetComponent<Collider2D>(out var triggerCol))
+            {
+                triggerCol.enabled = false;
+            }
+        }
+
+        // 6. Disable visuals on the static physics copy
+        foreach (var sr in staticCopy.GetComponentsInChildren<SpriteRenderer>(true))
+        {
+            sr.enabled = false;
+        }
     }
 
     private void OnDestroy()
@@ -75,7 +98,6 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
         {
             playerJoinManager.OnPlayerJoined -= HandlePlayerJoined;
         }
-        // Daca nava este distrusa in joc, stergem si copia ei statica
         if (staticInteriorTransform != null)
         {
             Destroy(staticInteriorTransform.gameObject);
@@ -84,7 +106,8 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
 
     private void HandlePlayerJoined(GameObject playerObj)
     {
-        // Mutam jucatorul in interiorul generat automat
+      
+        // Move the real player to the invisible static ship
         playerObj.transform.position = generatedSpawnPosition;
 
         if (playerObj.TryGetComponent<Rigidbody2D>(out var rb))
@@ -92,7 +115,8 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
         }
 
-        // Cream dublura vizuala direct pe aceasta nava (transform)
+   
+        // Create visual dummy on the flying ship (this.transform) and sync it with the real player in the static ship
         GameObject dummyObj = new GameObject($"{playerObj.name}_VisualDummy");
         dummyObj.transform.SetParent(this.transform, false);
 
@@ -105,7 +129,7 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
             dummySr.color = realSr.color;
             dummySr.sortingLayerID = realSr.sortingLayerID;
             dummySr.sortingOrder = realSr.sortingOrder;
-            realSr.enabled = false;
+            realSr.enabled = false; 
         }
 
         syncedPlayers.Add(new SyncedPlayer
@@ -119,6 +143,8 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
 
     void LateUpdate()
     {
+        if (staticInteriorTransform == null) return;
+
         for (int i = syncedPlayers.Count - 1; i >= 0; i--)
         {
             var pair = syncedPlayers[i];
@@ -130,12 +156,14 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
                 continue;
             }
 
+
+       
             pair.visualDummy.localPosition = staticInteriorTransform.InverseTransformPoint(pair.physicsPlayer.position);
             pair.visualDummy.localRotation = Quaternion.Inverse(staticInteriorTransform.rotation) * pair.physicsPlayer.rotation;
-            pair.visualDummy.localScale = pair.physicsPlayer.localScale;
 
             if (pair.realSprite != null && pair.dummySprite != null)
             {
+                pair.visualDummy.localScale = pair.realSprite.transform.lossyScale;
                 pair.dummySprite.sprite = pair.realSprite.sprite;
                 pair.dummySprite.flipX = pair.realSprite.flipX;
                 pair.dummySprite.flipY = pair.realSprite.flipY;

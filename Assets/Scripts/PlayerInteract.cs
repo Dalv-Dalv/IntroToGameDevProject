@@ -1,109 +1,121 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
 
 public class PlayerInteract : MonoBehaviour
 {
     private InputAction moveAction;
     private InputAction interactAction;
-    private InputAction jumpAction; 
     private InputAction backAction;
-    
+
+    [Header("References")]
     [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private MonoBehaviour playerMovementScript; // Trage scriptul tău de mișcare (ex: PlayerMovement) aici
+    [SerializeField] private PlayerMovement playerMovement;
 
     [Header("Detection Settings")]
     [SerializeField] private float interactRadius = 1.5f;
     [SerializeField] private LayerMask interactableLayer;
 
-    private InteractableObject currentInteractable;
+    private SpaceshipModule currentModule;
 
     private void Awake()
     {
+        if (playerMovement == null) playerMovement = GetComponent<PlayerMovement>();
+
         moveAction = playerInput.actions["Move"];
         interactAction = playerInput.actions["Interact"];
-        jumpAction = playerInput.actions["Jump"];
-        backAction = playerInput.actions["Back"];
-    }
-    void Start()
-    {
-        backAction.Enable();
-        backAction.performed += _ => OnBack();
-        interactAction.Enable();
-        interactAction.performed += _ => OnInteract();
+        backAction = playerInput.actions.FindAction("Back");
     }
 
-    void OnInteract()
+    private void OnEnable()
     {
+        interactAction.Enable();
+        interactAction.performed += OnInteractPerformed;
+
+        if (backAction != null)
+        {
+            backAction.Enable();
+            backAction.performed += OnBackPerformed;
+        }
+    }
+
+    private void OnDisable()
+    {
+        ReleaseCurrentModule();
+
+        interactAction.performed -= OnInteractPerformed;
+        if (backAction != null)
+        {
+            backAction.performed -= OnBackPerformed;
+        }
+    }
+
+    private void OnInteractPerformed(InputAction.CallbackContext ctx)
+    {
+        if (currentModule != null)
+        {
+            ReleaseCurrentModule();
+            return;
+        }
+
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, interactRadius, interactableLayer);
 
-        InteractableObject closestInteractable = null;
+        SpaceshipModule closestModule = null;
         float minDistance = Mathf.Infinity;
 
         foreach (Collider2D hit in hits)
         {
-            if (hit.TryGetComponent<InteractableObject>(out var interactable))
+            if (hit.TryGetComponent<SpaceshipModule>(out var module) && module.enabled && !module.IsOccupied)
             {
                 float distance = Vector2.Distance(transform.position, hit.transform.position);
                 if (distance < minDistance)
                 {
                     minDistance = distance;
-                    closestInteractable = interactable;
+                    closestModule = module;
                 }
             }
         }
-        Debug.Log(closestInteractable);
-        if (closestInteractable != null)
-        {
-            currentInteractable = closestInteractable;
-            StartControlling(currentInteractable);
-             
-        }
-    }
-    void OnBack()
-    {
-        if (currentInteractable != null)
-        {
-            FinishControlling();
-        }
-    }
-    private void StartControlling(InteractableObject target)
-    {
-        currentInteractable = target;
-        currentInteractable.Interact();
 
-        // Oprește mișcarea normală a jucătorului
-        if (playerMovementScript != null)
+        if (closestModule != null && closestModule.TryOccupy(this))
         {
-            playerMovementScript.enabled = false;
+            currentModule = closestModule;
+            if (playerMovement != null) playerMovement.SetUsingModule(true);
         }
     }
-    public void FinishControlling()
-    {
-        if (currentInteractable != null)
-        {
-            currentInteractable.StopControl();
-            currentInteractable = null;
 
-            // Redă controlul jucătorului
-            if (playerMovementScript != null)
+    private void OnBackPerformed(InputAction.CallbackContext ctx)
+    {
+        ReleaseCurrentModule();
+    }
+
+    public void ReleaseCurrentModule()
+    {
+        if (currentModule != null)
+        {
+            currentModule.Release();
+            currentModule = null;
+
+            if (playerMovement != null) playerMovement.SetUsingModule(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (currentModule != null)
+        {
+            if (Vector2.Distance(transform.position, currentModule.transform.position) > interactRadius * 1.5f)
             {
-                playerMovementScript.enabled = true;
+                ReleaseCurrentModule();
+                return;
             }
+
+            Vector2 input = moveAction.ReadValue<Vector2>();
+            currentModule.SendInput(input);
         }
     }
-    void Update()
-    {
-        if (currentInteractable != null)
-        {
-            Vector2 moveInput = moveAction.ReadValue<Vector2>();
-            currentInteractable.Control(moveInput);
-        }
-    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, interactRadius);
     }
 }
-
