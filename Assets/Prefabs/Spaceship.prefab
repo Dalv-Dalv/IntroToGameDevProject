@@ -963,7 +963,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8196660980249806474}
   - component: {fileID: 3282525071069893212}
-  - component: {fileID: 7620151255049306261}
+  - component: {fileID: 2808344887929276927}
   m_Layer: 0
   m_Name: InteractableObject
   m_TagString: Untagged
@@ -1032,7 +1032,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7620151255049306261
+--- !u!114 &2808344887929276927
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1041,11 +1041,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5077371807761468424}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ebb0cdb9e158c24d8776b8b5705f554, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f632f13591187942b0c7cfcd85b7236, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  spaceshipController: {fileID: 812593334868605043}
-  standPoint: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::SpaceshipController
+  spaceshipController: {fileID: 1935464391370612767}
+  standPoint: {fileID: 8696796949490552948}
 --- !u!1 &6323495060993054528
 GameObject:
   m_ObjectHideFlags: 0
@@ -1473,8 +1473,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4186631216441539485}
   - component: {fileID: 4338591792050826952}
-  - component: {fileID: 812593334868605043}
   - component: {fileID: 4442598192518366678}
+  - component: {fileID: 1935464391370612767}
   m_Layer: 0
   m_Name: Spaceship
   m_TagString: Untagged
@@ -1525,24 +1525,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &812593334868605043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8336810724437783972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcdf7d50b8f1a72478ef8ca84f5389a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpaceshipController
-  rb: {fileID: 4338591792050826952}
-  maxSpeed: 8
-  movementDynamics:
-    f: 1.5
-    z: 0.8
-    r: 0
 --- !u!114 &4442598192518366678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1557,3 +1539,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAndSpaceshipSync
   interiorCollidersRoot: {fileID: 3973203137307636532}
   localSpawnPoint: {fileID: 4164818132453369090}
+--- !u!114 &1935464391370612767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336810724437783972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae46c1461d24dff46a3dbfa5d9722a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovementModule
+  maxSpeed: 1000

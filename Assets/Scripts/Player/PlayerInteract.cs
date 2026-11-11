@@ -15,7 +15,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private float interactRadius = 1.5f;
     [SerializeField] private LayerMask interactableLayer;
 
-    private SpaceshipModule currentModule;
+    private SpaceshipController currentModule;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class PlayerInteract : MonoBehaviour
 
         moveAction = playerInput.actions["Move"];
         interactAction = playerInput.actions["Interact"];
-        backAction = playerInput.actions.FindAction("Back");
+        backAction = playerInput.actions["Back"];
     }
 
     private void OnEnable()
@@ -53,18 +53,17 @@ public class PlayerInteract : MonoBehaviour
     {
         if (currentModule != null)
         {
-            ReleaseCurrentModule();
             return;
         }
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, interactRadius, interactableLayer);
 
-        SpaceshipModule closestModule = null;
+        SpaceshipController closestModule = null;
         float minDistance = Mathf.Infinity;
 
         foreach (Collider2D hit in hits)
         {
-            if (hit.TryGetComponent<SpaceshipModule>(out var module) && module.enabled && !module.IsOccupied)
+            if (hit.TryGetComponent<SpaceshipController>(out var module) && module.enabled && !module.IsOccupied)
             {
                 float distance = Vector2.Distance(transform.position, hit.transform.position);
                 if (distance < minDistance)
@@ -108,8 +107,10 @@ public class PlayerInteract : MonoBehaviour
                 return;
             }
 
-            Vector2 input = moveAction.ReadValue<Vector2>();
-            currentModule.SendInput(input);
+            Vector2 moveInput = moveAction.ReadValue<Vector2>();
+            bool interactInput=  interactAction.IsPressed();
+            currentModule.SetMoveInput(moveInput);
+            currentModule.SetInteractInput(interactInput);
         }
     }
 

@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 356239150}
   - component: {fileID: 356239149}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -663,6 +663,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &753643617 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+  m_PrefabInstance: {fileID: 8644129389361841053}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,6 +847,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4186631216441539485, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
   m_PrefabInstance: {fileID: 8644129389361841053}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1022624838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753643617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae46c1461d24dff46a3dbfa5d9722a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  maxSpeed: 8
 --- !u!1 &1212476654
 GameObject:
   m_ObjectHideFlags: 0
@@ -1059,6 +1077,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 812593334868605043, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      propertyPath: m_EditorClassIdentifier
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1331883689708830271, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -1111,6 +1133,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4338591792050826952, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      propertyPath: m_Mass
+      value: 10.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4338591792050826952, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      propertyPath: m_LinearDamping
+      value: 2.01
+      objectReference: {fileID: 0}
     - target: {fileID: 5406405511464427676, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -1127,6 +1157,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7620151255049306261, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      propertyPath: spaceshipController
+      value: 
+      objectReference: {fileID: 1022624838}
     - target: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
       propertyPath: m_Name
       value: Spaceship
@@ -1143,10 +1177,14 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 812593334868605043, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1022624838}
   m_SourcePrefab: {fileID: 100100000, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

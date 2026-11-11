@@ -65,9 +65,9 @@ public class PlayerAndSpaceshipSync : MonoBehaviour
         }
 
         // 4. Link static modules to their visual counterparts on the moving ship
-        SpaceshipController shipController = GetComponent<SpaceshipController>();
-        SpaceshipModule[] visualModules = interiorCollidersRoot.GetComponentsInChildren<SpaceshipModule>(true);
-        SpaceshipModule[] staticModules = staticCopy.GetComponentsInChildren<SpaceshipModule>(true);
+        SpaceshipModule shipController = GetComponent<SpaceshipModule>();
+        SpaceshipController[] visualModules = interiorCollidersRoot.GetComponentsInChildren<SpaceshipController>(true);
+        SpaceshipController[] staticModules = staticCopy.GetComponentsInChildren<SpaceshipController>(true);
 
         for (int i = 0; i < staticModules.Length; i++)
         {

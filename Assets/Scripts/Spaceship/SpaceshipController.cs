@@ -1,52 +1,84 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class SpaceshipController : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private Rigidbody2D rb;
+    [Header("Module References")]
+    [SerializeField] protected SpaceshipModule spaceshipController;
 
-    [Header("Movement Settings")]
-    [SerializeField] private float maxSpeed = 8f;
-    [SerializeField] private DynamicsParams movementDynamics = new DynamicsParams(1.5f, 0.8f, 0f);
+    [Tooltip("Optional: Transform where the player is aligned horizontally when operating this module.")]
+    [SerializeField] private Transform standPoint;
 
-    private V2SecondOrderDynamics velocityDynamics;
-    private Vector2 currentMoveInput;
-    private Vector2 previousTargetVelocity;
+    public PlayerInteract CurrentOperator { get; private set; }
+    public bool IsOccupied => CurrentOperator != null;
 
-    private void Awake()
+  
+    public Transform VisualTransform { get; private set; }
+
+    public virtual void Initialize(SpaceshipModule controller, Transform visualTransform)
     {
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-        velocityDynamics = new V2SecondOrderDynamics(movementDynamics.f, movementDynamics.z, movementDynamics.r, Vector2.zero);
+        spaceshipController = controller;
+        VisualTransform = visualTransform;
     }
 
-    public void SetMoveInput(Vector2 input)
+    protected virtual void Awake()
     {
-        currentMoveInput = Vector2.ClampMagnitude(input, 1f);
+        if (spaceshipController == null)
+        {
+            spaceshipController = GetComponentInParent<SpaceshipModule>();
+        }
+        if (VisualTransform == null)
+        {
+            VisualTransform = transform;
+        }
     }
 
-    private void FixedUpdate()
+    public bool TryOccupy(PlayerInteract player)
     {
-        velocityDynamics.ChangeParameters(Mathf.Max(0.01f, movementDynamics.f), movementDynamics.z, movementDynamics.r);
+        if (IsOccupied) return false;
 
-        Vector2 targetVelocity = currentMoveInput * maxSpeed;
-        Vector2 targetVelocityDerivative = (targetVelocity - previousTargetVelocity) / Time.fixedDeltaTime;
-        previousTargetVelocity = targetVelocity;
+        CurrentOperator = player;
 
-        Vector2 smoothedVelocity = velocityDynamics.Update(Time.fixedDeltaTime, targetVelocity, targetVelocityDerivative);
+        if (standPoint != null)
+        {
+            player.transform.position = new Vector3(
+                standPoint.position.x,
+                player.transform.position.y,
+                player.transform.position.z
+            );
+        }
 
-        Vector2 velocityDifference = smoothedVelocity - rb.linearVelocity;
-        Vector2 forceNeeded = (velocityDifference / Time.fixedDeltaTime) * rb.mass;
+        OnOperatorEntered(player);
+        return true;
+    }
 
-        rb.AddForce(forceNeeded, ForceMode2D.Force);
+    public void Release()
+    {
+        if (!IsOccupied) return;
+
+        PlayerInteract previousOperator = CurrentOperator;
+        CurrentOperator = null;
+        OnOperatorExited(previousOperator);
+    }
+
+    public virtual void SetMoveInput(Vector2 directionalInput){
+        spaceshipController?.SetMoveInput(directionalInput); 
+    }   
+    public virtual void SetInteractInput(bool interactInput){
+        spaceshipController?.SetInteractInput(interactInput);
+
+    }
+    protected virtual void OnOperatorEntered(PlayerInteract player) { }
+    protected virtual void OnOperatorExited(PlayerInteract player) { 
+        spaceshipController?.SetMoveInput(Vector2.zero);
     }
 
 #if UNITY_EDITOR
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-        if (!Application.isPlaying || velocityDynamics == null) return;
-        velocityDynamics.ChangeParameters(Mathf.Max(0.01f, movementDynamics.f), movementDynamics.z, movementDynamics.r);
+        if (spaceshipController == null)
+        {
+            spaceshipController = GetComponentInParent<SpaceshipModule>();
+        }
     }
 #endif
 }
