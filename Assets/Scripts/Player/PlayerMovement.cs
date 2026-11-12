@@ -2,8 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput), typeof(Rigidbody2D))]
-public class PlayerMovement : MonoBehaviour
-{
+public class PlayerMovement : MonoBehaviour{
     [Header("References")]
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private Rigidbody2D rb;
@@ -35,8 +34,7 @@ public class PlayerMovement : MonoBehaviour
     private V2SecondOrderDynamics velocityDynamics;
     private Vector2 previousTargetVelocity;
 
-    private void Start()
-    {
+    private void Start(){
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
 
@@ -45,46 +43,38 @@ public class PlayerMovement : MonoBehaviour
         velocityDynamics = new V2SecondOrderDynamics(dynamics.f, dynamics.z, dynamics.r, Vector2.zero);
     }
 
-    public void SetUsingModule(bool usingModule)
-    {
+    public void SetUsingModule(bool usingModule){
         isUsingModule = usingModule;
-        if (isUsingModule)
-        {
+        if (isUsingModule){
             moveInput = Vector2.zero;
             jumpBufferCounter = -1f;
         }
     }
 
-    private void Jump()
-    {
+    private void Jump(){
         if (isUsingModule) return;
         jumpBufferCounter = jumpBufferDuration;
         Debug.Log("Jumped");
     }
 
-    private void Update()
-    {
+    private void Update(){
         moveInput = isUsingModule ? Vector2.zero : moveAction.ReadValue<Vector2>();
     }
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate(){
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
 
-        if (isGrounded)
-        {
+        if (isGrounded){
             hangCounter = hangTime;
         }
-        else
-        {
+        else{
             hasJumped = false;
             hangCounter = Mathf.Clamp(hangCounter - Time.fixedDeltaTime, -1f, hangTime);
         }
 
         jumpBufferCounter = Mathf.Clamp(jumpBufferCounter - Time.fixedDeltaTime, -1f, jumpBufferDuration);
 
-        if (!isUsingModule && !hasJumped && jumpBufferCounter >= 0f && hangCounter > 0f)
-        {
+        if (!isUsingModule && !hasJumped && jumpBufferCounter >= 0f && hangCounter > 0f){
             rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
             hasJumped = true;
         }
@@ -104,17 +94,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnValidate()
-    {
+    private void OnValidate(){
         if (!Application.isPlaying || velocityDynamics == null) return;
         velocityDynamics.ChangeParameters(Mathf.Max(0.01f, dynamics.f), dynamics.z, dynamics.r);
     }
 #endif
 
-    private void OnDrawGizmos()
-    {
-        if (groundCheck != null)
-        {
+    private void OnDrawGizmos(){
+        if (groundCheck != null){
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }

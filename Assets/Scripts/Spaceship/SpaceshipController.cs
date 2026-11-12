@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class SpaceshipController : MonoBehaviour
-{
+public class SpaceshipController : MonoBehaviour{
     [Header("Module References")]
     [SerializeField] protected SpaceshipModule spaceshipController;
 
@@ -14,32 +13,26 @@ public class SpaceshipController : MonoBehaviour
   
     public Transform VisualTransform { get; private set; }
 
-    public virtual void Initialize(SpaceshipModule controller, Transform visualTransform)
-    {
+    public virtual void Initialize(SpaceshipModule controller, Transform visualTransform){
         spaceshipController = controller;
         VisualTransform = visualTransform;
     }
 
-    protected virtual void Awake()
-    {
-        if (spaceshipController == null)
-        {
+    protected virtual void Awake() {
+        if (spaceshipController == null){
             spaceshipController = GetComponentInParent<SpaceshipModule>();
         }
-        if (VisualTransform == null)
-        {
+        if (VisualTransform == null){
             VisualTransform = transform;
         }
     }
 
-    public bool TryOccupy(PlayerInteract player)
-    {
+    public bool TryOccupy(PlayerInteract player) {
         if (IsOccupied) return false;
 
         CurrentOperator = player;
 
-        if (standPoint != null)
-        {
+        if (standPoint != null) {
             player.transform.position = new Vector3(
                 standPoint.position.x,
                 player.transform.position.y,
@@ -51,8 +44,7 @@ public class SpaceshipController : MonoBehaviour
         return true;
     }
 
-    public void Release()
-    {
+    public void Release() {
         if (!IsOccupied) return;
 
         PlayerInteract previousOperator = CurrentOperator;

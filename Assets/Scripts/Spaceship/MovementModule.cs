@@ -1,8 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class MovementModule : SpaceshipModule
-{
+public class MovementModule : SpaceshipModule{
     [Header("Movement Settings")]
     [SerializeField] private float maxSpeed = 8f;
 
