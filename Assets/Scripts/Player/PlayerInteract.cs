@@ -1,22 +1,24 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInteract : MonoBehaviour{
+public class PlayerInteract : MonoBehaviour {
     private InputAction moveAction;
     private InputAction interactAction;
     private InputAction backAction;
 
-    [Header("References")]
-    [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private PlayerMovement playerMovement;
+    [Header("References")] [SerializeField]
+    private PlayerInput playerInput;
 
-    [Header("Detection Settings")]
-    [SerializeField] private float interactRadius = 1.5f;
-    [SerializeField] private LayerMask interactableLayer;
+    [SerializeField] PlayerMovement playerMovement;
+
+    [Header("Detection Settings")] [SerializeField]
+    float interactRadius = 1.5f;
+
+    [SerializeField] LayerMask interactableLayer;
 
     private SpaceshipController currentModule;
 
-    private void Awake(){
+    private void Awake() {
         if (playerMovement == null) playerMovement = GetComponent<PlayerMovement>();
 
         moveAction = playerInput.actions["Move"];
@@ -24,7 +26,7 @@ public class PlayerInteract : MonoBehaviour{
         backAction = playerInput.actions["Back"];
     }
 
-    private void OnEnable(){
+    private void OnEnable() {
         interactAction.Enable();
         interactAction.performed += OnInteractPerformed;
 
@@ -43,7 +45,7 @@ public class PlayerInteract : MonoBehaviour{
         }
     }
 
-    private void OnInteractPerformed(InputAction.CallbackContext ctx){
+    private void OnInteractPerformed(InputAction.CallbackContext ctx) {
         if (currentModule != null) {
             return;
         }
@@ -53,10 +55,10 @@ public class PlayerInteract : MonoBehaviour{
         SpaceshipController closestModule = null;
         float minDistance = Mathf.Infinity;
 
-        foreach (Collider2D hit in hits){
+        foreach (Collider2D hit in hits) {
             if (hit.TryGetComponent<SpaceshipController>(out var module) && module.enabled && !module.IsOccupied) {
                 float distance = Vector2.Distance(transform.position, hit.transform.position);
-                if (distance < minDistance)  {
+                if (distance < minDistance) {
                     minDistance = distance;
                     closestModule = module;
                 }
@@ -73,7 +75,7 @@ public class PlayerInteract : MonoBehaviour{
         ReleaseCurrentModule();
     }
 
-    public void ReleaseCurrentModule(){
+    public void ReleaseCurrentModule() {
         if (currentModule != null) {
             currentModule.Release();
             currentModule = null;
@@ -82,9 +84,9 @@ public class PlayerInteract : MonoBehaviour{
         }
     }
 
-    private void Update(){
-        if (currentModule != null){
-            if (Vector2.Distance(transform.position, currentModule.transform.position) > interactRadius * 1.5f){
+    private void Update() {
+        if (currentModule != null) {
+            if (Vector2.Distance(transform.position, currentModule.transform.position) > interactRadius * 1.5f) {
                 ReleaseCurrentModule();
                 return;
             }
@@ -96,7 +98,7 @@ public class PlayerInteract : MonoBehaviour{
         }
     }
 
-    private void OnDrawGizmosSelected(){
+    private void OnDrawGizmosSelected() {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, interactRadius);
     }

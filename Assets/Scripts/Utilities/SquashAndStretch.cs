@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
 public class SquashAndStretch : MonoBehaviour {
-    [Header("References")]
-    [SerializeField] private Rigidbody2D rb;
+    [Header("References")] [SerializeField]
+    private Rigidbody2D rb;
 
-    [Header("Deformation Settings")]
-    [Tooltip("How much the sprite deforms per unit of velocity change.")]
-    [SerializeField] private float deformationMultiplier = 0.05f;
-    [Tooltip("The maximum amount the scale can stretch or squash to prevent it from vanishing.")]
-    [SerializeField] private float maxDeformation = 0.5f;
+    [Header("Deformation Settings")] [Tooltip("How much the sprite deforms per unit of velocity change.")] [SerializeField]
+    private float deformationMultiplier = 0.05f;
 
-    [Header("Bounce Dynamics")]
-    [SerializeField] private DynamicsParams dynamics = new DynamicsParams(5f, 0.25f, 0f);
+    [Tooltip("The maximum amount the scale can stretch or squash to prevent it from vanishing.")] [SerializeField]
+    private float maxDeformation = 0.5f;
+
+    [Header("Bounce Dynamics")] [SerializeField]
+    private DynamicsParams dynamics = new DynamicsParams(5f, 0.25f, 0f);
 
     private V3SecondOrderDynamics scaleDynamics;
     private Vector2 previousVelocity;
@@ -30,7 +30,7 @@ public class SquashAndStretch : MonoBehaviour {
     private void FixedUpdate() {
         var deltaSpeedX = Mathf.Abs(rb.linearVelocity.x) - Mathf.Abs(previousVelocity.x);
         var deltaSpeedY = Mathf.Abs(rb.linearVelocity.y) - Mathf.Abs(previousVelocity.y);
-        
+
         previousVelocity = rb.linearVelocity;
 
         var xDeformation = deltaSpeedX * deformationMultiplier;
@@ -48,7 +48,7 @@ public class SquashAndStretch : MonoBehaviour {
     private void LateUpdate() {
         transform.localScale = scaleDynamics.Update(Time.deltaTime, targetScale, Vector3.zero);
     }
-    
+
 #if UNITY_EDITOR
     private void OnValidate() {
         if (!Application.isPlaying) return;

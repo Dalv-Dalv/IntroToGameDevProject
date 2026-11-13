@@ -16,11 +16,11 @@ public class PlayerJoinManager : MonoBehaviour {
         foreach (var gamepad in Gamepad.all)
             if (gamepad.startButton.wasPressedThisFrame && !IsDeviceAlreadyPaired(gamepad))
                 JoinPlayer("Gamepad", gamepad);
-        
+
         var kb = Keyboard.current;
-        
+
         if (kb == null) return;
-        
+
         if (kb.spaceKey.wasPressedThisFrame && !IsKeyboardSchemeActive("KeyboardP1"))
             JoinPlayer("KeyboardP1", kb);
 
@@ -37,9 +37,9 @@ public class PlayerJoinManager : MonoBehaviour {
     private void JoinPlayer(string schemeName, InputDevice device) {
         var pi = PlayerInput.Instantiate(playerPrefab, controlScheme: schemeName, pairWithDevice: device);
         pi.actions.Enable();
-        
+
         playersJoined++;
-        
+
         Debug.Log($"Player {playersJoined} joined using {schemeName}!");
         OnPlayerJoined?.Invoke(pi.gameObject);
     }
