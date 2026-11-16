@@ -348,7 +348,7 @@ SpriteRenderer:
   m_Size: {x: 4.14, y: 7.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
 --- !u!4 &356239150
@@ -663,6 +663,65 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &636961956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 636961959}
+  - component: {fileID: 636961958}
+  - component: {fileID: 636961957}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &636961957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636961956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91df8b7b9e82e5128ad6ba52dc8df311, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDebugKeys
+--- !u!114 &636961958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636961956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cfbf116c6ac6d1b3933a6fc3c36c702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelManager
+  resultDelay: 2
+  startGracePeriod: 0.5
+--- !u!4 &636961959
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636961956}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.39942, y: 3.88726, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &753643617 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
@@ -842,6 +901,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerJoinManager
   playerPrefab: {fileID: 191877860707029800, guid: 96e538a0a7c45404ea6d67a362f676a3, type: 3}
   maxPlayers: 4
+  spawnFromRosterOnStart: 1
+  allowLiveJoining: 1
 --- !u!4 &1022624834 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4186631216441539485, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
@@ -1198,3 +1259,4 @@ SceneRoots:
   - {fileID: 863846924}
   - {fileID: 356239150}
   - {fileID: 2111990748}
+  - {fileID: 636961959}

@@ -95,6 +95,10 @@ Movement smoothing, camera tracking, and sprite deformation use a second-order s
 | `PlayerMovement.cs` | Handles 2D horizontal movement, jumping, coyote time, jump buffering, and velocity smoothing. |
 | `PlayerInteract.cs` | Performs overlap checks for `SpaceshipController` stations and routes input while occupying a module. |
 | `PlayerAndSpaceshipSync.cs` | Clones the static physics interior and syncs visual player transforms onto the moving ship. |
+| `LevelManager.cs` | Per-scene win/lose state. `Complete()` / `Fail()` freeze the ship, show a result and reload the scene. |
+| `ShipCrashDetector.cs` | On the Spaceship root: any non-trigger collision calls `LevelManager.Fail()`. |
+| `GoalZone.cs` | Green trigger zone: the ship entering it calls `LevelManager.Complete()`. |
+| `LevelDebugKeys.cs` | Editor/dev only: F9 = win, F10 = lose. |
 | `SpaceshipController.cs` | Represents an interactable station inside the ship; forwards operator input to a `SpaceshipModule`. |
 | `SpaceshipModule.cs` | Abstract base class for ship systems controlled via consoles. |
 | `MovementModule.cs` | Applies directional forces to the spaceship `Rigidbody2D` based on operator input. |

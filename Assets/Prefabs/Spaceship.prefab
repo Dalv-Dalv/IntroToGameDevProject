@@ -1475,6 +1475,7 @@ GameObject:
   - component: {fileID: 4338591792050826952}
   - component: {fileID: 4442598192518366678}
   - component: {fileID: 1935464391370612767}
+  - component: {fileID: 3539251037841692872}
   m_Layer: 0
   m_Name: Spaceship
   m_TagString: Untagged
@@ -1552,3 +1553,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementModule
   maxSpeed: 1000
+--- !u!114 &3539251037841692872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336810724437783972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 589010cb3c1338bbb8d7de52e406c46e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipCrashDetector
+  crashLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
