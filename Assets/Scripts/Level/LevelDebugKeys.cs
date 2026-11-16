@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-#if UNITY_EDITOR || DEBUG
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 public class LevelDebugKeys : MonoBehaviour {
     void Update() {
         var kb = Keyboard.current;

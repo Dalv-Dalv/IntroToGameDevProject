@@ -1,17 +1,30 @@
 using System;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerJoinManager : MonoBehaviour {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private int maxPlayers;
-    private int playersJoined;
+
+    [Header("Roster")]
+    [Tooltip("Respawn players already in the PlayerRoster when the scene starts")]
+    [SerializeField] private bool spawnFromRosterOnStart = true;
+    [Tooltip("Allow new players to join with their join key")]
+    [SerializeField] private bool allowLiveJoining = true;
 
     public Action<GameObject> OnPlayerJoined;
+
+    // Must happen in Start: PlayerAndSpaceshipSync subscribes to OnPlayerJoined in Awake
+    private void Start() {
+        if (!spawnFromRosterOnStart) return;
+
+        foreach (var entry in PlayerRoster.Entries) {
+            if (entry.device != null) SpawnPlayer(entry.controlScheme, entry.device);
+        }
+    }
+
     private void Update() {
-        //Debug.Log(playersJoined);
-        if (playersJoined >= maxPlayers) return;
+        if (!allowLiveJoining || PlayerRoster.Count >= maxPlayers) return;
 
         foreach (var gamepad in Gamepad.all)
             if (gamepad.startButton.wasPressedThisFrame && !IsDeviceAlreadyPaired(gamepad))
@@ -35,20 +48,23 @@ public class PlayerJoinManager : MonoBehaviour {
     }
 
     private void JoinPlayer(string schemeName, InputDevice device) {
+        PlayerRoster.Add(schemeName, device);
+        SpawnPlayer(schemeName, device);
+    }
+
+    private void SpawnPlayer(string schemeName, InputDevice device) {
         var pi = PlayerInput.Instantiate(playerPrefab, controlScheme: schemeName, pairWithDevice: device);
         pi.actions.Enable();
 
-        playersJoined++;
-
-        Debug.Log($"Player {playersJoined} joined using {schemeName}!");
+        Debug.Log($"Player joined using {schemeName}!");
         OnPlayerJoined?.Invoke(pi.gameObject);
     }
 
     private bool IsDeviceAlreadyPaired(InputDevice device) {
-        return PlayerInput.all.Any(p => p.devices.Contains(device));
+        return PlayerRoster.UsesDevice(device);
     }
 
     private bool IsKeyboardSchemeActive(string schemeName) {
-        return PlayerInput.all.Any(p => p.currentControlScheme == schemeName);
+        return PlayerRoster.UsesScheme(schemeName);
     }
 }

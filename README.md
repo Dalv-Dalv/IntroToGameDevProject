@@ -91,7 +91,7 @@ Movement smoothing, camera tracking, and sprite deformation use a second-order s
 
 | Script | Purpose |
 | :--- | :--- |
-| `PlayerJoinManager.cs` | Detects device join inputs and instantiates player prefabs with paired control schemes. |
+| `PlayerJoinManager.cs` | Detects device join inputs, instantiates player prefabs with paired control schemes, records them in `PlayerRoster` and respawns roster players on scene start. |
 | `PlayerMovement.cs` | Handles 2D horizontal movement, jumping, coyote time, jump buffering, and velocity smoothing. |
 | `PlayerInteract.cs` | Performs overlap checks for `SpaceshipController` stations and routes input while occupying a module. |
 | `PlayerAndSpaceshipSync.cs` | Clones the static physics interior and syncs visual player transforms onto the moving ship. |
@@ -99,6 +99,9 @@ Movement smoothing, camera tracking, and sprite deformation use a second-order s
 | `ShipCrashDetector.cs` | On the Spaceship root: any non-trigger collision calls `LevelManager.Fail()`. |
 | `GoalZone.cs` | Green trigger zone: the ship entering it calls `LevelManager.Complete()`. |
 | `LevelDebugKeys.cs` | Editor/dev only: F9 = win, F10 = lose. |
+| `PlayerRoster.cs` | Static list of joined device/scheme pairs, so players survive scene loads. |
+| `JoinScreenController.cs` | Join screen UI; any joined player pressing Interact loads the gameplay scene. |
+| `SceneNames.cs` | Scene name constants. |
 | `SpaceshipController.cs` | Represents an interactable station inside the ship; forwards operator input to a `SpaceshipModule`. |
 | `SpaceshipModule.cs` | Abstract base class for ship systems controlled via consoles. |
 | `MovementModule.cs` | Applies directional forces to the spaceship `Rigidbody2D` based on operator input. |

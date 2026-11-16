@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,8 @@ public class LevelManager : MonoBehaviour {
     public LevelState State { get; private set; } = LevelState.Playing;
     public bool IsInGracePeriod => Time.time < startTime + startGracePeriod;
 
+    public event Action OnLevelWon, OnLevelLost;
+
     private float startTime;
 
     void Awake() {
@@ -27,6 +30,7 @@ public class LevelManager : MonoBehaviour {
     public void Complete() {
         if (State != LevelState.Playing) return;
         State = LevelState.Won;
+        OnLevelWon?.Invoke();
         FreezeShip();
         HandleResult(true);
     }
@@ -34,6 +38,7 @@ public class LevelManager : MonoBehaviour {
     public void Fail() {
         if (State != LevelState.Playing) return;
         State = LevelState.Lost;
+        OnLevelLost?.Invoke();
         FreezeShip();
         HandleResult(false);
     }
