@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,8 +13,6 @@ public class LevelManager : MonoBehaviour {
     public LevelState State { get; private set; } = LevelState.Playing;
     public bool IsInGracePeriod => Time.time < startTime + startGracePeriod;
 
-    public event Action OnLevelWon, OnLevelLost;
-
     private float startTime;
 
     void Awake() {
@@ -30,7 +27,6 @@ public class LevelManager : MonoBehaviour {
     public void Complete() {
         if (State != LevelState.Playing) return;
         State = LevelState.Won;
-        OnLevelWon?.Invoke();
         FreezeShip();
         HandleResult(true);
     }
@@ -38,7 +34,6 @@ public class LevelManager : MonoBehaviour {
     public void Fail() {
         if (State != LevelState.Playing) return;
         State = LevelState.Lost;
-        OnLevelLost?.Invoke();
         FreezeShip();
         HandleResult(false);
     }
@@ -51,14 +46,21 @@ public class LevelManager : MonoBehaviour {
         rb.simulated = false;
     }
 
-    // Placeholder result handling: just reload the scene.
     private void HandleResult(bool won) {
-        StartCoroutine(ReloadAfterDelay());
+        StartCoroutine(FinishAfterDelay(won));
     }
 
-    private IEnumerator ReloadAfterDelay() {
+    // Hands the result to the run, or reloads the scene when played without a run
+    private IEnumerator FinishAfterDelay(bool won) {
         yield return new WaitForSecondsRealtime(resultDelay);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        if (!RunManager.HasActiveRun) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        } else if (won) {
+            RunManager.CompletePendingNode();
+        } else {
+            RunManager.FailRun();
+        }
     }
 
     void OnGUI() {

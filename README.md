@@ -99,9 +99,17 @@ Movement smoothing, camera tracking, and sprite deformation use a second-order s
 | `ShipCrashDetector.cs` | On the Spaceship root: any non-trigger collision calls `LevelManager.Fail()`. |
 | `GoalZone.cs` | Green trigger zone: the ship entering it calls `LevelManager.Complete()`. |
 | `LevelDebugKeys.cs` | Editor/dev only: F9 = win, F10 = lose. |
-| `PlayerRoster.cs` | Static list of joined device/scheme pairs, so players survive scene loads. |
+| `PlayerRoster.cs` | Persistent (`DontDestroyOnLoad`) list of joined device/scheme pairs, so players survive scene loads. |
 | `JoinScreenController.cs` | Join screen UI; any joined player pressing Interact loads the gameplay scene. |
 | `SceneNames.cs` | Scene name constants. |
+| `RunManager.cs` | Static class owning the current run: starts runs, selects map nodes, loads the map/gameplay scenes and ends runs. |
+| `RunState.cs` | Current run data: map, visited nodes, pending node and the nodes that can be picked next. |
+| `RunConfig.cs` | ScriptableObject with run/map tuning (`Assets/Resources/RunConfig.asset`). |
+| `RunResultScreen.cs` | Shows "RUN COMPLETE" / "RUN FAILED" on the map after a run ends. |
+| `LevelConfig.cs` | ScriptableObject describing a level, referenced by map nodes. |
+| `MapGenerator.cs` | Deterministic (seeded) generator for the branching node map. |
+| `MapNode.cs`, `MapData.cs`, `NodeType.cs` | Map data model. |
+| `MapDebugView.cs` | Text-only map where available nodes are buttons. |
 | `SpaceshipController.cs` | Represents an interactable station inside the ship; forwards operator input to a `SpaceshipModule`. |
 | `SpaceshipModule.cs` | Abstract base class for ship systems controlled via consoles. |
 | `MovementModule.cs` | Applies directional forces to the spaceship `Rigidbody2D` based on operator input. |

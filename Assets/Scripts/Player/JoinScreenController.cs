@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 // Join screen: shows who joined and starts the game when any joined player presses Interact
 public class JoinScreenController : MonoBehaviour {
@@ -9,7 +8,7 @@ public class JoinScreenController : MonoBehaviour {
 
         foreach (var player in PlayerInput.all) {
             if (player.actions["Interact"].WasPressedThisFrame()) {
-                SceneManager.LoadScene(SceneNames.Gameplay);
+                RunManager.StartNewRun();
                 return;
             }
         }
