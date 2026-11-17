@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1066479883}
   - component: {fileID: 1066479884}
+  - component: {fileID: 1066479885}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -202,6 +203,21 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1066479885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066479882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b163d5bd8b660b9fbbeebb12242d5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapCamera
+  size: 5
+  smoothTime: 0.3
+  lookAhead: 3
 --- !u!1 &1700125407
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,6 +229,10 @@ GameObject:
   - component: {fileID: 1700125408}
   - component: {fileID: 1700125409}
   - component: {fileID: 1700125410}
+  - component: {fileID: 1700125411}
+  - component: {fileID: 1700125412}
+  - component: {fileID: 1700125414}
+  - component: {fileID: 1700125413}
   m_Layer: 0
   m_Name: MapView
   m_TagString: Untagged
@@ -260,6 +280,81 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunResultScreen
   showTime: 3
+--- !u!114 &1700125411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700125407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71cbcd797eeb561e5b6490239e223fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapView
+  xSpacing: 2.5
+  ySpacing: 2
+  jitter: 0.3
+  dashSpacing: 0.4
+  visuals: {fileID: 11400000, guid: 8a6fe2f25d65da54baf83366fa440922, type: 2}
+  backgroundColor: {r: 0.85, g: 0.78, b: 0.6, a: 1}
+  edgeColor: {r: 0.3, g: 0.2, b: 0.1, a: 1}
+  tokenMoveTime: 0.5
+--- !u!114 &1700125412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700125407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df076fee0f177d40ac71bedb0415f96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapCursor
+--- !u!114 &1700125413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700125407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 368ea3f4599dbe9b3bc9e2cf5aad4c92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapPlayerSpawner
+  mapPlayerPrefab: {fileID: 7640513294958520112, guid: 9746ee61c571328ecadaeeec98df6b43, type: 3}
+--- !u!114 &1700125414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700125407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 232a100fac44e894091b9c46b7793102, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: 
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -1,8 +1,17 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-// Text-only map: rows from the boss (top) down to row 0. Available nodes are buttons
+#if UNITY_EDITOR || DEBUG
+// Text-only map for debugging, toggled with F1. Available nodes are buttons
 public class MapDebugView : MonoBehaviour {
+    private bool visible;
+
+    void Update() {
+        if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame) visible = !visible;
+    }
+
     void OnGUI() {
+        if (!visible) return;
         if (!RunManager.HasActiveRun) {
             GUILayout.Label("No active run");
             return;
@@ -27,3 +36,4 @@ public class MapDebugView : MonoBehaviour {
         }
     }
 }
+#endif

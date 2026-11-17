@@ -30,6 +30,11 @@ public static class RunManager {
         SceneManager.LoadScene(SceneNames.Map);
     }
 
+    // For playing the map scene directly in the editor, makes a run without loading a scene
+    public static void EnsureRunForDebug() {
+        if (State == null) CreateRun();
+    }
+
     private static void CreateRun() {
         int seed = Config.seed != 0 ? Config.seed : new System.Random().Next(1, int.MaxValue);
         State = new RunState { seed = seed, map = MapGenerator.Generate(Config, seed) };
