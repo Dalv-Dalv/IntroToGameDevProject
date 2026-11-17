@@ -20,5 +20,9 @@ MonoBehaviour:
   itemsWeight: 2
   discardWeight: 1
   seed: 0
-  levels: []
-  bossLevel: {fileID: 0}
+  levels:
+  - {fileID: 11400000, guid: b37ab7427f7ee64c4ad1e3994f3b69e3, type: 2}
+  - {fileID: 11400000, guid: 6b85f30d0c413ac8381752be5775697e, type: 2}
+  - {fileID: 11400000, guid: 97ec225b5220d75dc8391e05453b1eac, type: 2}
+  - {fileID: 11400000, guid: 65eccd7d7ae294c45944e9aa97bebe5e, type: 2}
+  bossLevel: {fileID: 11400000, guid: 6453158c51c3779e9ae50870e7d71906, type: 2}

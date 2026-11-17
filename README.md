@@ -106,7 +106,9 @@ Movement smoothing, camera tracking, and sprite deformation use a second-order s
 | `RunState.cs` | Current run data: map, visited nodes, pending node and the nodes that can be picked next. |
 | `RunConfig.cs` | ScriptableObject with run/map tuning (`Assets/Resources/RunConfig.asset`). |
 | `RunResultScreen.cs` | Shows "RUN COMPLETE" / "RUN FAILED" on the map after a run ends. |
-| `LevelConfig.cs` | ScriptableObject describing a level, referenced by map nodes. |
+| `LevelConfig.cs` | ScriptableObject describing a level: display name, layout prefab and difficulty. |
+| `LevelLayout.cs` | On the root of a layout prefab (obstacles + goal), points to where the ship starts. |
+| `LevelBootstrap.cs` | In the gameplay scene: swaps the default layout for the picked level's layout and moves the ship to its start. |
 | `MapGenerator.cs` | Deterministic (seeded) generator for the branching node map. |
 | `MapNode.cs`, `MapData.cs`, `NodeType.cs` | Map data model. |
 | `MapDebugView.cs` | Text-only map for debugging (F1 toggles, Editor/dev only). |
