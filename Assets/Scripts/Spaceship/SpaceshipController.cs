@@ -1,10 +1,12 @@
 using UnityEngine;
 
 public class SpaceshipController : MonoBehaviour {
-    [Header("Module References")] [SerializeField]
+    [Header("Module References")]
+    [SerializeField]
     protected SpaceshipModule spaceshipController;
 
-    [Tooltip("Optional: Transform where the player is aligned horizontally when operating this module.")] [SerializeField]
+    [Tooltip("Optional: Transform where the player is aligned horizontally when operating this module.")]
+    [SerializeField]
     private Transform standPoint;
 
     public PlayerInteract CurrentOperator { get; private set; }
@@ -61,6 +63,7 @@ public class SpaceshipController : MonoBehaviour {
     protected virtual void OnOperatorEntered(PlayerInteract player) { }
     protected virtual void OnOperatorExited(PlayerInteract player) {
         spaceshipController?.SetMoveInput(Vector2.zero);
+        spaceshipController?.SetInteractInput(false);
     }
 
 #if UNITY_EDITOR

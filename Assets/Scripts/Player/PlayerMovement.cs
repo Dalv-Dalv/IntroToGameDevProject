@@ -95,6 +95,9 @@ public class PlayerMovement : MonoBehaviour {
 
         rb.AddForce(new Vector2(forceNeededX, 0f), ForceMode2D.Force);
     }
+    public void SetPhysicsRigidbody(Rigidbody2D proxyRb) {
+    rb = proxyRb;
+    }
 
 #if UNITY_EDITOR
     private void OnValidate() {
