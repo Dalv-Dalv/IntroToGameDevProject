@@ -4,8 +4,12 @@ using UnityEngine;
 
 public static class MapGenerator {
     public static MapData Generate(RunConfig cfg, int seed) {
+        if (cfg.levels.Count == 0 || cfg.bossLevel == null) {
+            throw new ArgumentException("RunConfig needs at least one level and a boss level");
+        }
+
         var rng = new System.Random(seed);
-        var map = new MapData { rowCount = cfg.rows };
+        var map = new MapData();
         int bossRow = cfg.rows - 1;
 
         // Nodes, each row stays close to the one below so the edges stay short
@@ -14,7 +18,7 @@ public static class MapGenerator {
             columns = PickColumns(cfg, rng, columns);
             foreach (int c in columns) AddNode(map, r, c);
         }
-        AddNode(map, bossRow, (cfg.columns - 1) / 2);
+        AddNode(map, bossRow, (cfg.columns - 1) / 2, NodeType.Boss);
 
         // Edges
         for (int r = 0; r < bossRow; r++) {
@@ -22,24 +26,28 @@ public static class MapGenerator {
         }
 
         // Types, a non-Level node can't come right after another non-Level node
-        for (int r = 0; r <= bossRow; r++) {
+        // The first row and the row before the boss stay Level
+        for (int r = 1; r < bossRow - 1; r++) {
             foreach (var n in map.Row(r)) {
-                if (r == bossRow) n.type = NodeType.Boss;
-                else if (r == 0 || r == bossRow - 1) n.type = NodeType.Level;
-                else if (FollowsSpecialNode(map, n)) n.type = NodeType.Level;
-                else n.type = RollType(cfg, rng);
-
-                if (n.type == NodeType.Boss) n.level = cfg.bossLevel;
-                else if (n.type == NodeType.Level && cfg.levels.Count > 0) n.level = cfg.levels[rng.Next(cfg.levels.Count)];
+                n.type = FollowsSpecialNode(map, n) ? NodeType.Level : RollType(cfg, rng);
             }
+        }
+
+        // Level and Boss nodes always have a level
+        foreach (var n in map.nodes) {
+            if (n.type == NodeType.Level) n.level = cfg.levels[rng.Next(cfg.levels.Count)];
+            else if (n.type == NodeType.Boss) n.level = cfg.bossLevel;
         }
 
         Validate(map);
         return map;
     }
 
-    private static void AddNode(MapData map, int row, int column) {
-        map.nodes.Add(new MapNode { id = map.nodes.Count, row = row, column = column });
+    private static void AddNode(MapData map, int row, int column, NodeType type = NodeType.Level) {
+        var node = new MapNode { id = map.nodes.Count, row = row, column = column, type = type };
+        map.nodes.Add(node);
+        if (map.rows.Count <= row) map.rows.Add(new List<MapNode>());
+        map.rows[row].Add(node);
     }
 
     private static List<int> PickColumns(RunConfig cfg, System.Random rng, List<int> previous) {

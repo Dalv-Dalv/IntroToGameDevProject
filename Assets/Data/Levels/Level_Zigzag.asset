@@ -14,4 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   displayName: Zigzag
   layoutPrefab: {fileID: 1504967756301907820, guid: 424fc1ce7f58a3e3393b7a55ab90273c, type: 3}
-  difficulty: 2

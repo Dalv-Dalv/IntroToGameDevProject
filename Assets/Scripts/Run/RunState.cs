@@ -5,7 +5,7 @@ public class RunState {
     public MapData map;
     public int currentNodeId = -1;   // -1 means the run just started
     public List<int> visitedNodeIds = new();
-    public MapNode PendingNode;      // node being played right now
+    public MapNode PendingNode;      // level node being played right now
 
     // Row 0 at the start, otherwise the nodes connected to the current one
     // Only these can be picked, so there is no going back
@@ -17,5 +17,10 @@ public class RunState {
             result.Add(map.Get(id));
         }
         return result;
+    }
+
+    public void Visit(MapNode node) {
+        visitedNodeIds.Add(node.id);
+        currentNodeId = node.id;
     }
 }

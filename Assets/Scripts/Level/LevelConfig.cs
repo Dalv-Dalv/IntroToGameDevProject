@@ -4,5 +4,4 @@ using UnityEngine;
 public class LevelConfig : ScriptableObject {
     public string displayName;
     public GameObject layoutPrefab;
-    public int difficulty;
 }

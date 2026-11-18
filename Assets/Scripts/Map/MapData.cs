@@ -2,7 +2,9 @@ using System.Collections.Generic;
 
 public class MapData {
     public List<MapNode> nodes = new();
-    public int rowCount;
+    public List<List<MapNode>> rows = new();   // rows[0] is the bottom row, each row is ordered by column
+
+    public int RowCount => rows.Count;
 
     // Node ids are indices into the list
     public MapNode Get(int id) {
@@ -10,10 +12,6 @@ public class MapData {
     }
 
     public List<MapNode> Row(int row) {
-        var result = new List<MapNode>();
-        foreach (var n in nodes) {
-            if (n.row == row) result.Add(n);
-        }
-        return result;
+        return rows[row];
     }
 }

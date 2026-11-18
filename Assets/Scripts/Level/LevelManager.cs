@@ -1,15 +1,16 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour {
     public enum LevelState { Playing, Won, Lost }
 
     public static LevelManager Instance { get; private set; }
 
+    [SerializeField] private Rigidbody2D ship;
     [SerializeField] private float resultDelay = 2f;
     [SerializeField] private float startGracePeriod = 0.5f;
 
+    public Rigidbody2D Ship => ship;
     public LevelState State { get; private set; } = LevelState.Playing;
     public bool IsInGracePeriod => Time.time < startTime + startGracePeriod;
 
@@ -25,53 +26,36 @@ public class LevelManager : MonoBehaviour {
     }
 
     public void Complete() {
-        if (State != LevelState.Playing) return;
-        State = LevelState.Won;
-        FreezeShip();
-        HandleResult(true);
+        End(LevelState.Won);
     }
 
     public void Fail() {
+        End(LevelState.Lost);
+    }
+
+    private void End(LevelState result) {
         if (State != LevelState.Playing) return;
-        State = LevelState.Lost;
-        FreezeShip();
-        HandleResult(false);
+        State = result;
+
+        // Freeze the ship
+        ship.linearVelocity = Vector2.zero;
+        ship.angularVelocity = 0f;
+        ship.simulated = false;
+
+        StartCoroutine(FinishAfterDelay());
     }
 
-    private void FreezeShip() {
-        var ship = FindAnyObjectByType<PlayerAndSpaceshipSync>();
-        if (ship == null || !ship.TryGetComponent(out Rigidbody2D rb)) return;
-        rb.linearVelocity = Vector2.zero;
-        rb.angularVelocity = 0f;
-        rb.simulated = false;
-    }
-
-    private void HandleResult(bool won) {
-        StartCoroutine(FinishAfterDelay(won));
-    }
-
-    // Hands the result to the run, or reloads the scene when played without a run
-    private IEnumerator FinishAfterDelay(bool won) {
+    private IEnumerator FinishAfterDelay() {
         yield return new WaitForSecondsRealtime(resultDelay);
 
-        if (!RunManager.HasActiveRun) {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        } else if (won) {
-            RunManager.CompletePendingNode();
-        } else {
-            RunManager.FailRun();
-        }
+        if (State == LevelState.Won) RunManager.CompletePendingNode();
+        else RunManager.FailRun();
     }
 
     void OnGUI() {
         if (State == LevelState.Playing) return;
+
         bool won = State == LevelState.Won;
-        var style = new GUIStyle(GUI.skin.label) {
-            fontSize = 48,
-            alignment = TextAnchor.MiddleCenter,
-            fontStyle = FontStyle.Bold
-        };
-        style.normal.textColor = won ? Color.green : Color.red;
-        GUI.Label(new Rect(0, 0, Screen.width, Screen.height), won ? "LEVEL COMPLETE" : "SHIP DESTROYED", style);
+        DebugText.Draw(won ? "LEVEL COMPLETE" : "SHIP DESTROYED", 48, won ? Color.green : Color.red, TextAnchor.MiddleCenter);
     }
 }

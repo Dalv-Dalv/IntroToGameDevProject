@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,15 +17,7 @@ public static class PlayerRoster {
     public static int Count => entries.Count;
 
     public static void Add(string scheme, InputDevice device) {
-        if (Contains(scheme, device)) return;
         entries.Add(new RosterEntry { controlScheme = scheme, device = device });
-    }
-
-    public static bool Contains(string scheme, InputDevice device) {
-        foreach (var e in entries) {
-            if (e.controlScheme == scheme && e.device == device) return true;
-        }
-        return false;
     }
 
     public static bool UsesDevice(InputDevice device) {
@@ -41,9 +34,21 @@ public static class PlayerRoster {
         return false;
     }
 
+    public static PlayerInput Spawn(GameObject prefab, string scheme, InputDevice device) {
+        return PlayerInput.Instantiate(prefab, controlScheme: scheme, pairWithDevice: device);
+    }
+
+    // Creates a player for every roster entry
+    public static void SpawnAll(GameObject prefab, Action<PlayerInput> onSpawned = null) {
+        foreach (var e in entries) {
+            var player = Spawn(prefab, e.controlScheme, e.device);
+            onSpawned?.Invoke(player);
+        }
+    }
+
     // Statics are not reset when domain reload is disabled for play mode, so clear them on start
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-    public static void Clear() {
+    private static void Clear() {
         entries.Clear();
     }
 }

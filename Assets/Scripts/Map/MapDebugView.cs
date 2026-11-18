@@ -1,26 +1,21 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-#if UNITY_EDITOR || DEBUG
-// Text-only map for debugging, toggled with F1. Available nodes are buttons
+// Text-only map for debugging, toggled with F1 (editor and development builds). Available nodes are buttons
 public class MapDebugView : MonoBehaviour {
     private bool visible;
 
     void Update() {
-        if (Keyboard.current != null && Keyboard.current.f1Key.wasPressedThisFrame) visible = !visible;
+        if (!Debug.isDebugBuild || Keyboard.current == null) return;
+        if (Keyboard.current.f1Key.wasPressedThisFrame) visible = !visible;
     }
 
     void OnGUI() {
         if (!visible) return;
-        if (!RunManager.HasActiveRun) {
-            GUILayout.Label("No active run");
-            return;
-        }
-
         var state = RunManager.State;
 
         GUILayout.Label($"Seed {state.seed}");
-        for (int r = state.map.rowCount - 1; r >= 0; r--) {
+        for (int r = state.map.RowCount - 1; r >= 0; r--) {
             GUILayout.BeginHorizontal();
             GUILayout.Label($"Row {r}", GUILayout.Width(50));
             foreach (var n in state.map.Row(r)) {
@@ -36,4 +31,3 @@ public class MapDebugView : MonoBehaviour {
         }
     }
 }
-#endif

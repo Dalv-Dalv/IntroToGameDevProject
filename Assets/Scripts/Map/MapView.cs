@@ -23,7 +23,6 @@ public class MapView : MonoBehaviour {
     private Transform token;
 
     void Awake() {
-        RunManager.EnsureRunForDebug();
         state = RunManager.State;
 
         if (visuals == null) visuals = ScriptableObject.CreateInstance<NodeTypeVisuals>();
@@ -33,25 +32,21 @@ public class MapView : MonoBehaviour {
         CreateEdges();
         CreateNodes();
         CreateToken();
-        Refresh();
 
         var mapCamera = FindAnyObjectByType<MapCamera>();
         if (mapCamera != null) mapCamera.SetTarget(token);
     }
 
-    public MapNodeView GetView(int nodeId) {
-        return nodeViews[nodeId];
-    }
-
-    // Updates how the nodes and edges look from the run state
-    public void Refresh() {
+    // Updates how the nodes and edges look, selected is the node the cursor is on
+    public void Refresh(MapNode selected) {
         var available = state.AvailableNodes();
 
         var reachable = new HashSet<int>();
         foreach (var node in available) AddReachable(node, reachable);
 
         foreach (var view in nodeViews.Values) {
-            if (state.visitedNodeIds.Contains(view.Node.id)) view.SetState(MapNodeView.NodeState.Visited);
+            if (view.Node == selected) view.SetState(MapNodeView.NodeState.Selected);
+            else if (state.visitedNodeIds.Contains(view.Node.id)) view.SetState(MapNodeView.NodeState.Visited);
             else if (available.Contains(view.Node)) view.SetState(MapNodeView.NodeState.Available);
             else view.SetState(MapNodeView.NodeState.Locked);
         }
@@ -60,6 +55,8 @@ public class MapView : MonoBehaviour {
             bool live = edge.From.id == state.currentNodeId || reachable.Contains(edge.From.id);
             edge.SetLive(live);
         }
+
+        token.position = TokenHome();
     }
 
     public IEnumerator MoveToken(MapNode node) {
@@ -94,10 +91,10 @@ public class MapView : MonoBehaviour {
     }
 
     private void CreateBackground() {
-        float centerY = (state.map.rowCount - 1) * ySpacing / 2f;
+        float centerY = (state.map.RowCount - 1) * ySpacing / 2f;
         var background = NewSprite("Background", MapSprites.Square(), -10, new Vector3(0f, centerY, 0f));
         background.color = backgroundColor;
-        background.transform.localScale = new Vector3(40f, state.map.rowCount * ySpacing + 30f, 1f);
+        background.transform.localScale = new Vector3(40f, state.map.RowCount * ySpacing + 30f, 1f);
     }
 
     private void CreateEdges() {
@@ -132,11 +129,13 @@ public class MapView : MonoBehaviour {
     }
 
     // The token sits on the current node, or below row 0 at the start of a run
-    private void CreateToken() {
-        Vector3 position = new Vector3(0f, -ySpacing, 0f);
-        if (state.currentNodeId != -1) position = positions[state.currentNodeId];
+    private Vector3 TokenHome() {
+        if (state.currentNodeId == -1) return new Vector3(0f, -ySpacing, 0f);
+        return positions[state.currentNodeId];
+    }
 
-        var sr = NewSprite("Ship Token", MapSprites.Circle(), 3, position);
+    private void CreateToken() {
+        var sr = NewSprite("Ship Token", MapSprites.Circle(), 3, TokenHome());
         sr.color = Color.cyan;
         sr.transform.localScale = Vector3.one * 0.4f;
         token = sr.transform;

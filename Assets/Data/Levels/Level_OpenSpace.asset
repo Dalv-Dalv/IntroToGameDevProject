@@ -14,4 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   displayName: Open Space
   layoutPrefab: {fileID: 5682900825912641882, guid: 009d32c03012407289d9fd03e4e14100, type: 3}
-  difficulty: 1

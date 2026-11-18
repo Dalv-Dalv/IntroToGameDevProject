@@ -14,4 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   displayName: Narrow Gap
   layoutPrefab: {fileID: 6261773515914596095, guid: a21f05c63a344dcccb3a512c52f006ba, type: 3}
-  difficulty: 1

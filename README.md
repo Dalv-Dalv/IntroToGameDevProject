@@ -95,28 +95,30 @@ Movement smoothing, camera tracking, and sprite deformation use a second-order s
 | `PlayerMovement.cs` | Handles 2D horizontal movement, jumping, coyote time, jump buffering, and velocity smoothing. |
 | `PlayerInteract.cs` | Performs overlap checks for `SpaceshipController` stations and routes input while occupying a module. |
 | `PlayerAndSpaceshipSync.cs` | Clones the static physics interior and syncs visual player transforms onto the moving ship. |
-| `LevelManager.cs` | Per-scene win/lose state. `Complete()` / `Fail()` freeze the ship, show a result and reload the scene. |
+| `LevelManager.cs` | Per-scene win/lose state. `Complete()` / `Fail()` freeze the ship, show a result, then hand it to `RunManager`. |
 | `ShipCrashDetector.cs` | On the Spaceship root: any non-trigger collision calls `LevelManager.Fail()`. |
 | `GoalZone.cs` | Green trigger zone: the ship entering it calls `LevelManager.Complete()`. |
 | `LevelDebugKeys.cs` | Editor/dev only: F9 = win, F10 = lose. |
-| `PlayerRoster.cs` | Static list of joined device/scheme pairs, so players survive scene loads. |
-| `JoinScreenController.cs` | Join screen UI; any joined player pressing Interact loads the gameplay scene. |
+| `PlayerRoster.cs` | Static list of joined device/scheme pairs, so players survive scene loads. `SpawnAll` recreates the players. |
+| `JoinScreenController.cs` | Join screen UI; any joined player pressing Interact starts a run and loads the map. |
 | `SceneNames.cs` | Scene name constants. |
 | `RunManager.cs` | Static class owning the current run: starts runs, selects map nodes, loads the map/gameplay scenes and ends runs. |
 | `RunState.cs` | Current run data: map, visited nodes, pending node and the nodes that can be picked next. |
 | `RunConfig.cs` | ScriptableObject with run/map tuning (`Assets/Resources/RunConfig.asset`). |
 | `RunResultScreen.cs` | Shows "RUN COMPLETE" / "RUN FAILED" on the map after a run ends. |
-| `LevelConfig.cs` | ScriptableObject describing a level: display name, layout prefab and difficulty. |
+| `LevelConfig.cs` | ScriptableObject describing a level: display name and layout prefab. |
 | `LevelLayout.cs` | On the root of a layout prefab (obstacles + goal), points to where the ship starts. |
-| `LevelBootstrap.cs` | In the gameplay scene: swaps the default layout for the picked level's layout and moves the ship to its start. |
+| `LevelBootstrap.cs` | In the gameplay scene: spawns the picked level's layout and moves the ship to its start. |
 | `MapGenerator.cs` | Deterministic (seeded) generator for the branching node map. |
 | `MapNode.cs`, `MapData.cs`, `NodeType.cs` | Map data model. |
-| `MapDebugView.cs` | Text-only map for debugging (F1 toggles, Editor/dev only). |
-| `MapView.cs` | Builds the flat 2D map at runtime: nodes, dashed edges, ship token, background and camera pan. |
+| `MapDebugView.cs` | Text-only map for debugging (F1 toggles, Editor/dev only).
+| `DevBootstrap.cs` | Editor only: makes a run and a keyboard player so the map or level scene can be played directly. |
+| `DebugText.cs` | Draws big placeholder text over the screen (results, prompts). | |
+| `MapView.cs` | Builds the flat 2D map at runtime: nodes, dashed edges, ship token and background. |
 | `MapNodeView.cs` | One map node: state-based look (locked, visited, available, selected). |
 | `NodeTypeVisuals.cs` | ScriptableObject with an icon and tint per node type. |
 | `MapCursor.cs` | Highlights available nodes, confirms a pick and animates the token. |
-| `MapPlayerSpawner.cs` | Spawns a `MapPlayer` prefab (with `PlayerInput`) for every player in the roster, or `KeyboardP1` if the roster is empty. |
+| `MapPlayerSpawner.cs` | Spawns a `MapPlayer` prefab (with `PlayerInput`) for every player in the roster. |
 | `MapPlayerInput.cs` | On the `MapPlayer` prefab: reads Move/Interact and drives `MapCursor`, so any player can pick. |
 | `MapEdge.cs` | A dashed line between two nodes. |
 | `MapCamera.cs` | Pans the map camera vertically to follow the ship token. |

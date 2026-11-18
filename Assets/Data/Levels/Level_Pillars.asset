@@ -14,4 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   displayName: Pillars
   layoutPrefab: {fileID: 4484446096145945694, guid: 528a83a642ca5183590cbbc3d415d177, type: 3}
-  difficulty: 2

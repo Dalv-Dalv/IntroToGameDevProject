@@ -1,15 +1,16 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // Owns the current run, it is static so it survives scene loads
 public static class RunManager {
     public static RunState State { get; private set; }
-    public static bool HasActiveRun => State != null;
 
-    // Result of the run that just ended, null when there is nothing to show
-    public static bool? LastRunWon { get; set; }
+    // Called when the run changes without a scene load (picking an Items or Discard node)
+    public static event Action StateChanged;
 
     private static RunConfig config;
+    private static bool? lastRunWon;
 
     public static RunConfig Config {
         get {
@@ -22,7 +23,8 @@ public static class RunManager {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void Reset() {
         State = null;
-        LastRunWon = null;
+        lastRunWon = null;
+        StateChanged = null;
     }
 
     public static void StartNewRun() {
@@ -30,50 +32,51 @@ public static class RunManager {
         SceneManager.LoadScene(SceneNames.Map);
     }
 
-    // For playing the map scene directly in the editor, makes a run without loading a scene
-    public static void EnsureRunForDebug() {
-        if (State == null) CreateRun();
-    }
-
-    private static void CreateRun() {
+    public static void CreateRun() {
         int seed = Config.seed != 0 ? Config.seed : new System.Random().Next(1, int.MaxValue);
         State = new RunState { seed = seed, map = MapGenerator.Generate(Config, seed) };
     }
 
     public static bool CanSelect(MapNode n) {
-        if (State == null || State.PendingNode != null) return false;
-        return State.AvailableNodes().Contains(n);
+        return State.PendingNode == null && State.AvailableNodes().Contains(n);
     }
 
     public static void SelectNode(MapNode n) {
         if (!CanSelect(n)) return;
-        State.PendingNode = n;
 
-        if (n.type == NodeType.Level || n.type == NodeType.Boss) {
+        if (n.level != null) {
+            State.PendingNode = n;
             SceneManager.LoadScene(SceneNames.Gameplay);
         } else {
-            // Items and Discard nodes have no content yet, so they complete right away
-            CompletePendingNode();
+            // Items and Discard nodes have no content yet, so they are done right away
+            State.Visit(n);
+            StateChanged?.Invoke();
         }
     }
 
+    // Only called from the level scene
     public static void CompletePendingNode() {
         var node = State.PendingNode;
-        State.visitedNodeIds.Add(node.id);
-        State.currentNodeId = node.id;
         State.PendingNode = null;
+        State.Visit(node);
 
         if (node.type == NodeType.Boss) EndRun(true);
-        else if (SceneManager.GetActiveScene().name != SceneNames.Map) SceneManager.LoadScene(SceneNames.Map);
+        else SceneManager.LoadScene(SceneNames.Map);
     }
 
     public static void FailRun() {
         EndRun(false);
     }
 
+    // Result of the run that just ended, shown once. Null when there is nothing to show
+    public static bool? TakeLastResult() {
+        bool? result = lastRunWon;
+        lastRunWon = null;
+        return result;
+    }
+
     private static void EndRun(bool won) {
-        LastRunWon = won;
-        State = null;
+        lastRunWon = won;
         StartNewRun();
     }
 }

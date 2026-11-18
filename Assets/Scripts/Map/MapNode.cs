@@ -7,5 +7,5 @@ public class MapNode {
     public int column;               // used for layout
     public NodeType type;
     public List<int> next = new();   // ids of nodes in row + 1
-    public LevelConfig level;        // set for Level/Boss nodes (may be null)
+    public LevelConfig level;        // set for Level and Boss nodes, null for the rest
 }

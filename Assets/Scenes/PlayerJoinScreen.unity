@@ -209,8 +209,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerJoinManager
   playerPrefab: {fileID: 191877860707029800, guid: 96e538a0a7c45404ea6d67a362f676a3, type: 3}
   maxPlayers: 4
-  spawnFromRosterOnStart: 0
-  allowLiveJoining: 1
 --- !u!1 &1673842907
 GameObject:
   m_ObjectHideFlags: 0

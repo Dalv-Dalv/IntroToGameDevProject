@@ -1,35 +1,27 @@
 using UnityEngine;
 
-// Loads the layout of the level the player picked on the map
-// Without a run (scene played directly) the default layout stays
+// Loads the layout of the level the player picked on the map and puts the ship at its start
 [DefaultExecutionOrder(-100)]
+[RequireComponent(typeof(LevelManager))]
 public class LevelBootstrap : MonoBehaviour {
-    [SerializeField] private GameObject defaultLayout;
     [SerializeField] private float nameShowTime = 2f;
 
     private string levelName;
 
     void Awake() {
-        if (!RunManager.HasActiveRun) return;
-
-        var node = RunManager.State.PendingNode;
-        if (node == null || node.level == null || node.level.layoutPrefab == null) return;
-        var level = node.level;
-
-        if (defaultLayout != null) defaultLayout.SetActive(false);
+        var level = RunManager.State.PendingNode.level;
         var layout = Instantiate(level.layoutPrefab).GetComponent<LevelLayout>();
 
         // Move the ship before the physics run
-        var ship = FindAnyObjectByType<PlayerAndSpaceshipSync>();
+        var ship = GetComponent<LevelManager>().Ship;
         ship.transform.SetPositionAndRotation(layout.shipStart.position, layout.shipStart.rotation);
 
         levelName = level.displayName;
     }
 
     void OnGUI() {
-        if (levelName == null || Time.timeSinceLevelLoad > nameShowTime) return;
+        if (Time.timeSinceLevelLoad > nameShowTime) return;
 
-        var style = new GUIStyle(GUI.skin.label) { fontSize = 36, alignment = TextAnchor.UpperCenter };
-        GUI.Label(new Rect(0, 40, Screen.width, 100), levelName, style);
+        DebugText.Draw(levelName, 36, Color.white, TextAnchor.UpperCenter);
     }
 }

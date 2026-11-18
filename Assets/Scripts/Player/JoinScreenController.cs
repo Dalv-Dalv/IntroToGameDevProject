@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Join screen: shows who joined and starts the game when any joined player presses Interact
+// Join screen: shows who joined and starts the run when any joined player presses Interact
 public class JoinScreenController : MonoBehaviour {
     void Update() {
         if (PlayerRoster.Count == 0) return;
@@ -21,7 +21,6 @@ public class JoinScreenController : MonoBehaviour {
         }
         if (PlayerRoster.Count > 0) text += "\nInteract to start";
 
-        var style = new GUIStyle(GUI.skin.label) { fontSize = 24, alignment = TextAnchor.MiddleCenter };
-        GUI.Label(new Rect(0, 0, Screen.width, Screen.height), text, style);
+        DebugText.Draw(text, 24, Color.white, TextAnchor.MiddleCenter);
     }
 }
