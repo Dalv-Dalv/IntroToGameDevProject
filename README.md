@@ -1,4 +1,4 @@
-# 2D Co-Op Spaceship Project
+# Lumens in a Dangerous Space
 
 A local multiplayer 2D cooperative spaceship game built in Unity. Up to 4 players crew a single spacecraft, navigating its interior platforms and operating consoles to pilot the ship.
 
@@ -16,9 +16,9 @@ A local multiplayer 2D cooperative spaceship game built in Unity. Up to 4 player
 ## Getting Started
 
 1. Open the project in Unity (requires Universal Render Pipeline and the Unity Input System package).
-2. In the Project window, open **`SampleScene`**.
-3. Press **Play** in the Editor.
-4. The scene starts with no active players. Press **`Space`** (Keyboard P1) or **`Start`** (Gamepad) to spawn a character inside the ship.
+2. In the Project window, open **`Assets/Scenes/MainMenu.unity`** and enter Play Mode. Builds start here automatically.
+3. Select **Play** to open the crew lobby. Press a join key from the table below, then press **Interact** as a joined player to start the run.
+4. To change keys, select **Controls** and choose one of the four keyboard layouts. Click a key and press its replacement, or press **Esc** to cancel. Changes save automatically; **Reset to defaults** restores only the selected layout. Join keys and gamepad controls are unchanged.
 
 ---
 

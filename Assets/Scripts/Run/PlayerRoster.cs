@@ -35,7 +35,9 @@ public static class PlayerRoster {
     }
 
     public static PlayerInput Spawn(GameObject prefab, string scheme, InputDevice device) {
-        return PlayerInput.Instantiate(prefab, controlScheme: scheme, pairWithDevice: device);
+        var player = PlayerInput.Instantiate(prefab, controlScheme: scheme, pairWithDevice: device);
+        KeyboardBindingPreferences.Apply(player.actions);
+        return player;
     }
 
     // Creates a player for every roster entry
