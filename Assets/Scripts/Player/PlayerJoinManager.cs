@@ -4,20 +4,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerJoinManager : MonoBehaviour {
-    [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private int maxPlayers;
-    private int playersJoined;
+    [SerializeField] GameObject playerPrefab;
+    [SerializeField] int maxPlayers;
 
     public Action<GameObject> OnPlayerJoined;
-    private void Update() {
+    int playersJoined;
+    void Update() {
         //Debug.Log(playersJoined);
         if (playersJoined >= maxPlayers) return;
 
-        foreach (var gamepad in Gamepad.all)
+        foreach (Gamepad gamepad in Gamepad.all)
             if (gamepad.startButton.wasPressedThisFrame && !IsDeviceAlreadyPaired(gamepad))
                 JoinPlayer("Gamepad", gamepad);
 
-        var kb = Keyboard.current;
+        Keyboard kb = Keyboard.current;
 
         if (kb == null) return;
 
@@ -34,8 +34,8 @@ public class PlayerJoinManager : MonoBehaviour {
             JoinPlayer("KeyboardP4", kb);
     }
 
-    private void JoinPlayer(string schemeName, InputDevice device) {
-        var pi = PlayerInput.Instantiate(playerPrefab, controlScheme: schemeName, pairWithDevice: device);
+    void JoinPlayer(string schemeName, InputDevice device) {
+        PlayerInput pi = PlayerInput.Instantiate(playerPrefab, controlScheme: schemeName, pairWithDevice: device);
         pi.actions.Enable();
 
         playersJoined++;
@@ -44,11 +44,11 @@ public class PlayerJoinManager : MonoBehaviour {
         OnPlayerJoined?.Invoke(pi.gameObject);
     }
 
-    private bool IsDeviceAlreadyPaired(InputDevice device) {
+    bool IsDeviceAlreadyPaired(InputDevice device) {
         return PlayerInput.all.Any(p => p.devices.Contains(device));
     }
 
-    private bool IsKeyboardSchemeActive(string schemeName) {
+    bool IsKeyboardSchemeActive(string schemeName) {
         return PlayerInput.all.Any(p => p.currentControlScheme == schemeName);
     }
 }

@@ -2,79 +2,92 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAndSpaceshipSync : MonoBehaviour {
-    [Header("Setari Interior")]
-    [SerializeField] private Transform interiorRoot;
-    [SerializeField] private Transform localSpawnPoint;
+    static int shipInstanceCounter;
 
-    [Header("Layere")]
-    [Tooltip("Layer-ul atribuit corpului fizic din camera statica (ex: ProxyShaceship)")]
-    [SerializeField] private string proxyPlayerLayerName = "ProxySpaceship";
+    [SerializeField] Transform interiorRoot;
+    [SerializeField] Transform localSpawnPoint;
 
-    private Transform staticPhysicsRoom;
-    private Vector3 staticSpawnPosition;
-    private Vector3 interiorLocalOffset;
-    private Quaternion interiorLocalRotation;
-    private static int shipInstanceCounter = 0;
+    [SerializeField] LayerMask proxyPlayerLayer;
 
-    private class PlayerProxyPair {
-        public Transform visualPlayer;
-        public Transform physicsProxy;
-    }
+    readonly List<PlayerProxyPair> activePlayers = new List<PlayerProxyPair>();
+    Vector3 interiorLocalOffset;
+    Quaternion interiorLocalRotation;
+    PlayerJoinManager playerJoinManager;
 
-    private List<PlayerProxyPair> activePlayers = new List<PlayerProxyPair>();
-    private PlayerJoinManager playerJoinManager;
+    Transform staticPhysicsRoom;
+    Vector3 staticSpawnPosition;
 
     void Awake() {
         BuildStaticCollisionRoom();
 
-        playerJoinManager = FindAnyObjectByType<PlayerJoinManager>();
+        playerJoinManager = Object.FindAnyObjectByType<PlayerJoinManager>();
         if (playerJoinManager != null) {
             playerJoinManager.OnPlayerJoined += HandlePlayerJoined;
         }
     }
 
-    private void BuildStaticCollisionRoom() {
+    void LateUpdate() {
+        if (!staticPhysicsRoom) return;
+
+        for (int i = activePlayers.Count - 1; i >= 0; i--) {
+            PlayerProxyPair pair = activePlayers[i];
+            if (!pair.visualPlayer) {
+                if (pair.physicsProxy) Object.Destroy(pair.physicsProxy.gameObject);
+                activePlayers.RemoveAt(i);
+                continue;
+            }
+
+            Vector3 relPos = staticPhysicsRoom.InverseTransformPoint(pair.physicsProxy.position);
+            pair.visualPlayer.localPosition = interiorLocalOffset + interiorLocalRotation * relPos;
+            pair.visualPlayer.localRotation = interiorLocalRotation;
+        }
+    }
+
+    void OnDestroy() {
+        if (playerJoinManager != null) playerJoinManager.OnPlayerJoined -= HandlePlayerJoined;
+        if (staticPhysicsRoom != null) Object.Destroy(staticPhysicsRoom.gameObject);
+        foreach (PlayerProxyPair pair in activePlayers) {
+            if (pair.physicsProxy != null) Object.Destroy(pair.physicsProxy.gameObject);
+        }
+    }
+
+    void BuildStaticCollisionRoom() {
         if (interiorRoot == null) return;
 
         shipInstanceCounter++;
         interiorLocalOffset = transform.InverseTransformPoint(interiorRoot.position);
         interiorLocalRotation = Quaternion.Inverse(transform.rotation) * interiorRoot.rotation;
 
-        Vector3 hiddenPosition = new Vector3(0, -5000f - (shipInstanceCounter * 500f), 0);
+        Vector3 hiddenPosition = new Vector3(0, -5000f - shipInstanceCounter * 500f, 0);
 
-        // Clonam interiorul (pereții au deja layer-ul InnerSpaceship)
-        GameObject staticRoomObj = Instantiate(interiorRoot.gameObject, hiddenPosition, Quaternion.identity);
+        GameObject staticRoomObj = Object.Instantiate(interiorRoot.gameObject, hiddenPosition, Quaternion.identity);
         staticRoomObj.name = $"{gameObject.name}_PhysicsWallsOnly";
         staticPhysicsRoom = staticRoomObj.transform;
 
         if (localSpawnPoint != null) {
             Vector3 relSpawn = interiorRoot.InverseTransformPoint(localSpawnPoint.position);
             staticSpawnPosition = staticPhysicsRoom.TransformPoint(relSpawn);
-        }
-        else {
+        } else {
             staticSpawnPosition = staticPhysicsRoom.position;
         }
 
-        // Stergem doar vizualul si scripturile de console din copia statica
-        foreach (var sr in staticRoomObj.GetComponentsInChildren<SpriteRenderer>(true)) Destroy(sr);
-        foreach (var module in staticRoomObj.GetComponentsInChildren<SpaceshipController>(true)) Destroy(module);
-        foreach (var col in staticRoomObj.GetComponentsInChildren<Collider2D>(true)) {
-            if (col.isTrigger) Destroy(col);
+        foreach (SpriteRenderer sr in staticRoomObj.GetComponentsInChildren<SpriteRenderer>(true)) Object.Destroy(sr);
+        foreach (SpaceshipController module in staticRoomObj.GetComponentsInChildren<SpaceshipController>(true)) Object.Destroy(module);
+        foreach (Collider2D col in staticRoomObj.GetComponentsInChildren<Collider2D>(true)) {
+            if (col.isTrigger) Object.Destroy(col);
         }
     }
 
     public void HandlePlayerJoined(GameObject playerObj) {
         if (activePlayers.Exists(p => p.visualPlayer == playerObj.transform)) return;
 
-        // 1. Cream Proxy-ul in camera statica pe layer-ul ProxyShaceship
         GameObject proxyObj = new GameObject($"{playerObj.name}_PhysicsProxy");
         proxyObj.transform.position = staticSpawnPosition;
-        proxyObj.layer = LayerMask.NameToLayer(proxyPlayerLayerName);
+        proxyObj.layer = proxyPlayerLayer;
 
-        // 2. Copiem Rigidbody2D pe proxy, iar jucatorul de pe nava devine Kinematic
         Rigidbody2D playerRb = playerObj.GetComponent<Rigidbody2D>();
         Rigidbody2D proxyRb = proxyObj.AddComponent<Rigidbody2D>();
-        if (playerRb != null) {
+        if (playerRb) {
             proxyRb.mass = playerRb.mass;
             proxyRb.linearDamping = playerRb.linearDamping;
             proxyRb.angularDamping = playerRb.angularDamping;
@@ -86,20 +99,17 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
             playerRb.linearVelocity = Vector2.zero;
         }
 
-        // 3. Copiem CircleCollider2D-ul pe proxy (cel de pe player ramane activ pe layer-ul Player, dar nu colizioneaza cu nava datorita matricei!)
         CircleCollider2D playerCircle = playerObj.GetComponent<CircleCollider2D>();
-        if (playerCircle != null) {
+        if (playerCircle) {
             CircleCollider2D proxyCircle = proxyObj.AddComponent<CircleCollider2D>();
             proxyCircle.radius = playerCircle.radius;
             proxyCircle.offset = playerCircle.offset;
             proxyCircle.sharedMaterial = playerCircle.sharedMaterial;
         }
 
-        // 4. Atasam jucatorul la nava principala
-        playerObj.transform.SetParent(this.transform, false);
+        playerObj.transform.SetParent(transform, false);
 
-        // 5. Conectam PlayerMovement la proxyRb
-        if (playerObj.TryGetComponent<PlayerMovement>(out var movement)) {
+        if (playerObj.TryGetComponent(out PlayerMovement movement)) {
             movement.SetPhysicsRigidbody(proxyRb);
         }
 
@@ -109,35 +119,8 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
         });
     }
 
-    void LateUpdate() {
-        if (staticPhysicsRoom == null) return;
-
-        for (int i = activePlayers.Count - 1; i >= 0; i--) {
-            var pair = activePlayers[i];
-            if (pair.visualPlayer == null) {
-                if (pair.physicsProxy != null) Destroy(pair.physicsProxy.gameObject);
-                activePlayers.RemoveAt(i);
-                continue;
-            }
-
-            Vector3 relPos = staticPhysicsRoom.InverseTransformPoint(pair.physicsProxy.position);
-            pair.visualPlayer.localPosition = interiorLocalOffset + (interiorLocalRotation * relPos);
-            pair.visualPlayer.localRotation = interiorLocalRotation;
-        }
+    class PlayerProxyPair {
+        public Transform physicsProxy;
+        public Transform visualPlayer;
     }
-
-    private void OnDestroy() {
-        if (playerJoinManager != null) playerJoinManager.OnPlayerJoined -= HandlePlayerJoined;
-        if (staticPhysicsRoom != null) Destroy(staticPhysicsRoom.gameObject);
-        foreach (var pair in activePlayers) {
-            if (pair.physicsProxy != null) Destroy(pair.physicsProxy.gameObject);
-        }
-    }
-#if UNITY_EDITOR
-    private void OnValidate() {
-        if (LayerMask.NameToLayer(proxyPlayerLayerName) == -1) {
-            Debug.LogWarning($"[PlayerAndSpaceshipSync] Layer '{proxyPlayerLayerName}' dosen t exist", this);
-        }
-    }
-#endif
 }

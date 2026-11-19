@@ -1,19 +1,19 @@
-using System;
 using UnityEngine;
 
 public class WeaponFire : SpaceshipModule {
+    [SerializeField] float cooldown = 2.0f;
+    [SerializeField] float force;
+    [SerializeField] float rotationSpeed = 10.0f;
+    [SerializeField] Transform centerPoint;
 
-    [SerializeField] private float cooldown = 2.0f;
-    [SerializeField] private float force = 0.0f;
-    [SerializeField] private float rotationSpeed = 10.0f;
-    [SerializeField] private Transform CenterPoint;
-
-    [SerializeField] private float minRotation = -50.0f;
-    [SerializeField] private float maxRotation = 50.0f;
-    [SerializeField] private float gizmoRadius = 2.0f;
-    private float currentTime = 0.0f;
-    private float currentRotation = 0.0f;
+    [SerializeField] float minRotation = -50.0f;
+    [SerializeField] float maxRotation = 50.0f;
+    [SerializeField] float gizmoRadius = 2.0f;
     [SerializeField] GameObject bullet;
+
+    float currentRotation;
+    float currentTime;
+
     void Start() {
         float initialZ = transform.localEulerAngles.z;
         if (initialZ > 180f) initialZ -= 360f;
@@ -21,49 +21,42 @@ public class WeaponFire : SpaceshipModule {
         transform.localRotation = Quaternion.Euler(0f, 0f, currentRotation);
     }
 
-    // Update is called once per frame
     void Update() {
         currentTime += Time.deltaTime;
-        if (currentTime > cooldown && currentInteractInput == true) {
-            GameObject spawnedBullet = Instantiate(bullet, CenterPoint.position, Quaternion.identity);
+        if (currentTime > cooldown && currentInteractInput) {
+            GameObject spawnedBullet = Object.Instantiate(bullet, centerPoint.position, Quaternion.identity);
             Rigidbody2D rb = spawnedBullet.GetComponent<Rigidbody2D>();
-            rb.AddForce(-CenterPoint.transform.right * force, ForceMode2D.Impulse);
+            rb.AddForce(-centerPoint.transform.right * force, ForceMode2D.Impulse);
             currentTime = 0;
         }
-        if (currentMoveInput != Vector2.zero) {
-            Vector2 localInput = transform.parent != null
-                ? (Vector2)transform.parent.InverseTransformDirection(currentMoveInput)
-                : currentMoveInput;
 
-            float targetAngle = Mathf.Atan2(-localInput.y, -localInput.x) * Mathf.Rad2Deg;
+        if (currentMoveInput == Vector2.zero) return;
+        Vector2 localInput = transform.parent ? transform.parent.InverseTransformDirection(currentMoveInput) : currentMoveInput;
 
-            targetAngle = Mathf.Clamp(targetAngle, minRotation, maxRotation);
+        float targetAngle = Mathf.Atan2(-localInput.y, -localInput.x) * Mathf.Rad2Deg;
 
-            currentRotation = Mathf.MoveTowardsAngle(currentRotation, targetAngle, rotationSpeed * Time.deltaTime);
-            currentRotation = Mathf.Clamp(currentRotation, minRotation, maxRotation);
+        targetAngle = Mathf.Clamp(targetAngle, minRotation, maxRotation);
 
-            transform.localRotation = Quaternion.Euler(0f, 0f, currentRotation);
-        }
+        currentRotation = Mathf.MoveTowardsAngle(currentRotation, targetAngle, rotationSpeed * Time.deltaTime);
+        currentRotation = Mathf.Clamp(currentRotation, minRotation, maxRotation);
 
+        transform.localRotation = Quaternion.Euler(0f, 0f, currentRotation);
     }
-    private void OnDrawGizmosSelected() {
-        Vector3 origin = CenterPoint != null ? CenterPoint.position : transform.position;
 
-        // Luăm rotația părintelui pentru ca gizmo-ul să se rotească odată cu nava
+    void OnDrawGizmosSelected() {
+        Vector3 origin = centerPoint != null ? centerPoint.position : transform.position;
+
         Quaternion parentRotation = transform.parent != null ? transform.parent.rotation : Quaternion.identity;
 
-        // Direcția de bază a armei (-right, așa cum tragi în Update)
         Vector3 baseDir = parentRotation * Vector3.left;
 
         Vector3 minDir = Quaternion.Euler(0f, 0f, minRotation) * baseDir;
         Vector3 maxDir = Quaternion.Euler(0f, 0f, maxRotation) * baseDir;
 
-        // Liniile de limită (min și max)
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(origin, origin + minDir * gizmoRadius);
         Gizmos.DrawLine(origin, origin + maxDir * gizmoRadius);
 
-        // Arcul de cerc între minRotation și maxRotation
         Gizmos.color = new Color(1f, 0.92f, 0.016f, 0.35f);
         int segments = 24;
         Vector3 prevPoint = origin + minDir * gizmoRadius;
@@ -78,10 +71,9 @@ public class WeaponFire : SpaceshipModule {
             prevPoint = nextPoint;
         }
 
-        // Direcția curentă de tragere (roșu)
-        if (CenterPoint != null) {
+        if (centerPoint != null) {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(origin, origin + (-CenterPoint.right) * (gizmoRadius * 1.15f));
+            Gizmos.DrawLine(origin, origin + -centerPoint.right * (gizmoRadius * 1.15f));
         }
     }
 }

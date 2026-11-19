@@ -119,11 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &304607826 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 913553230091942146, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-  m_PrefabInstance: {fileID: 8644129389361841053}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1019,17 +1014,6 @@ Transform:
   - {fileID: 968539971}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2092773326 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5284657392187889410, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-  m_PrefabInstance: {fileID: 8644129389361841053}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 149d25c31de98ee479d1997aeed5c114, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!1 &2111990747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1111,57 +1095,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4602666520538153499, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: spaceshipController
-      value: 
-      objectReference: {fileID: 2092773326}
-    - target: {fileID: 5154221927115618617, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5154221927115618617, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5154221927115618617, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5154221927115618617, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5154221927115618617, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5284657392187889410, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: force
-      value: 20.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5284657392187889410, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: CenterPoint
-      value: 
-      objectReference: {fileID: 304607826}
-    - target: {fileID: 5284657392187889410, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: maxRotation
-      value: 74.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5284657392187889410, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: minRotation
-      value: -74.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5284657392187889410, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: rotationSpeed
-      value: 102.8
-      objectReference: {fileID: 0}
     - target: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
       propertyPath: m_Name
       value: Spaceship
-      objectReference: {fileID: 0}
-    - target: {fileID: 9177618674731697935, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.49
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
