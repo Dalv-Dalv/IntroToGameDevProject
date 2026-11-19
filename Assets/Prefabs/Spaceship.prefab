@@ -1872,7 +1872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAndSpaceshipSync
   interiorRoot: {fileID: 3973203137307636532}
   localSpawnPoint: {fileID: 4164818132453369090}
-  proxyPlayerLayer:
+  proxySpaceshipLayer:
     serializedVersion: 2
     m_Bits: 1024
 --- !u!114 &1935464391370612767
