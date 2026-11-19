@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 440370315350934926}
   - component: {fileID: 2889631458495671443}
   - component: {fileID: 396480815795421944}
+  - component: {fileID: 7242303072025265046}
+  - component: {fileID: 3113946480357837024}
   m_Layer: 8
   m_Name: Enemy_Basic
   m_TagString: Untagged
@@ -171,3 +173,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Damageable
   maxHealth: 30
+--- !u!114 &7242303072025265046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811990694135543822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd3dae7e19152c242a285ba935c0040a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyMover
+  patrolRadius: 4
+  patrolSpeed: 2.5
+  acceleration: 6
+  arriveDistance: 0.4
+  slowDownDistance: 1.5
+  maxPatrolTime: 6
+--- !u!114 &3113946480357837024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811990694135543822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed52dca846edd04190941bf3a337019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBrain
+  detectRadius: 8
+  loseRadius: 13
+  useLineOfSight: 1
+  lineOfSightMask:
+    serializedVersion: 2
+    m_Bits: 65
+  idleTimeRange: {x: 1, y: 2.5}
+  logStateChanges: 1
