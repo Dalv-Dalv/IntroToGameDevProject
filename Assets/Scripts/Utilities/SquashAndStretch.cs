@@ -49,7 +49,9 @@ public class SquashAndStretch : MonoBehaviour {
     void LateUpdate() {
         transform.localScale = scaleDynamics.Update(Time.deltaTime, targetScale, Vector3.zero);
     }
-
+    public void SetPhysicsRigidbody(Rigidbody2D rb){
+        this.rb=rb;
+    }
 #if UNITY_EDITOR
     void OnValidate() {
         if (!Application.isPlaying) return;

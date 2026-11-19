@@ -7,8 +7,6 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
     [SerializeField] Transform interiorRoot;
     [SerializeField] Transform localSpawnPoint;
 
-    [SerializeField] LayerMask proxySpaceshipLayer;
-
     readonly List<PlayerProxyPair> activePlayers = new List<PlayerProxyPair>();
     Vector3 interiorLocalOffset;
     Quaternion interiorLocalRotation;
@@ -58,7 +56,7 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
         interiorLocalOffset = transform.InverseTransformPoint(interiorRoot.position);
         interiorLocalRotation = Quaternion.Inverse(transform.rotation) * interiorRoot.rotation;
 
-        Vector3 hiddenPosition = new Vector3(0, -5000f - shipInstanceCounter * 500f, 0);
+        Vector3 hiddenPosition = new Vector3(0, - shipInstanceCounter * 500f, 0);
 
         GameObject staticRoomObj = Object.Instantiate(interiorRoot.gameObject, hiddenPosition, Quaternion.identity);
         staticRoomObj.name = $"{gameObject.name}_PhysicsWallsOnly";
@@ -70,13 +68,12 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
         } else {
             staticSpawnPosition = staticPhysicsRoom.position;
         }
-
+      
         foreach (SpriteRenderer sr in staticRoomObj.GetComponentsInChildren<SpriteRenderer>(true)) Object.Destroy(sr);
         foreach (SpaceshipController module in staticRoomObj.GetComponentsInChildren<SpaceshipController>(true)) Object.Destroy(module);
-        foreach (Collider2D col in staticRoomObj.GetComponentsInChildren<Collider2D>(true)) {
-            int layerIndex = Mathf.RoundToInt(Mathf.Log(proxySpaceshipLayer.value, 2));
-            col.gameObject.layer = Mathf.Clamp(layerIndex, 0, 31);
-            if (col.isTrigger) Object.Destroy(col);
+
+        foreach (Collider2D col in interiorRoot.GetComponentsInChildren<Collider2D>(true)){
+            Object.Destroy(col);
         }
     }
 
@@ -114,7 +111,10 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
         if (playerObj.TryGetComponent(out PlayerMovement movement)) {
             movement.SetPhysicsRigidbody(proxyRb);
         }
-
+        SquashAndStretch squash = playerObj.GetComponentInChildren<SquashAndStretch>();
+        if (squash != null) {
+            squash.SetPhysicsRigidbody(proxyRb);
+        }
         activePlayers.Add(new PlayerProxyPair {
             visualPlayer = playerObj.transform,
             physicsProxy = proxyObj.transform
