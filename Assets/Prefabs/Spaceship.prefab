@@ -1567,4 +1567,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipCrashDetector
   crashLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967039
