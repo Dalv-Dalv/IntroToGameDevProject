@@ -33,13 +33,11 @@ public class WeaponFire : SpaceshipModule {
         if (currentMoveInput == Vector2.zero) return;
         Vector2 localInput = transform.parent ? transform.parent.InverseTransformDirection(currentMoveInput) : currentMoveInput;
 
-        float targetAngle = Mathf.Atan2(-localInput.y, -localInput.x) * Mathf.Rad2Deg;
-
+        float rawAngle = Mathf.Atan2(-localInput.y, -localInput.x) * Mathf.Rad2Deg;
+        float midAngle = (minRotation + maxRotation) * 0.5f;
+        float targetAngle = midAngle + Mathf.DeltaAngle(midAngle, rawAngle);
         targetAngle = Mathf.Clamp(targetAngle, minRotation, maxRotation);
-
-        currentRotation = Mathf.MoveTowardsAngle(currentRotation, targetAngle, rotationSpeed * Time.deltaTime);
-        currentRotation = Mathf.Clamp(currentRotation, minRotation, maxRotation);
-
+        currentRotation = Mathf.MoveTowards(currentRotation, targetAngle, rotationSpeed * Time.deltaTime);
         transform.localRotation = Quaternion.Euler(0f, 0f, currentRotation);
     }
 

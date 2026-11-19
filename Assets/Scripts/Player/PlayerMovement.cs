@@ -110,5 +110,10 @@ public class PlayerMovement : MonoBehaviour {
     }
     public void SetPhysicsRigidbody(Rigidbody2D proxyRb) {
         rb = proxyRb;
+        if (groundCheck != null) {
+            Vector3 localOffset = groundCheck.localPosition;
+            groundCheck.SetParent(proxyRb.transform, false);
+            groundCheck.localPosition = localOffset;
+        }
     }
 }

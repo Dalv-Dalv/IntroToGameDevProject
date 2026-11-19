@@ -287,7 +287,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7585877492351599788}
   - component: {fileID: 8365508253673038244}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2007547586572933306}
   - component: {fileID: 2683177478593419558}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 275806784558834291}
   - component: {fileID: 528883398211638277}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -751,7 +751,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2630025719275001497}
   - component: {fileID: 5267200668826349437}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -923,7 +923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2278271832399810421}
   - component: {fileID: 7964096477760986767}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1001,7 +1001,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5881856394356438473}
   - component: {fileID: 4281579472154264705}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1110,7 +1110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2748223643824255426}
   - component: {fileID: 668066181984085292}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1188,7 +1188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1798018690742853355}
   - component: {fileID: 7587138919334805410}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1266,7 +1266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 990401392897308546}
   - component: {fileID: 6048541982880931640}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1529,7 +1529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6128215944762415843}
   - component: {fileID: 4408002157077413407}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1676,7 +1676,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8039628728670845900, guid: 8b41e14952b06f643b93f5d6ffa23ef8, type: 3}
   m_Color: {r: 0, g: 0.73856795, b: 1, a: 1}
@@ -1826,7 +1826,7 @@ GameObject:
   m_Component:
   - component: {fileID: 825173535393989505}
   - component: {fileID: 2737910022401451997}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1996,7 +1996,7 @@ GameObject:
   m_Component:
   - component: {fileID: 836825788987598055}
   - component: {fileID: 5068807001559960556}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2077,7 +2077,9 @@ GameObject:
   - component: {fileID: 4442598192518366678}
   - component: {fileID: 1935464391370612767}
   - component: {fileID: 3539251037841692872}
-  m_Layer: 0
+  - component: {fileID: 6066057436355362860}
+  - component: {fileID: 3417522812025805470}
+  m_Layer: 8
   m_Name: Spaceship
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2152,9 +2154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAndSpaceshipSync
   interiorRoot: {fileID: 3973203137307636532}
   localSpawnPoint: {fileID: 4164818132453369090}
-  proxySpaceshipLayer:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &1935464391370612767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2183,6 +2182,55 @@ MonoBehaviour:
   crashLayers:
     serializedVersion: 2
     m_Bits: 1
+--- !u!58 &6066057436355362860
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336810724437783972}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.0000009536743, y: 0}
+  m_Radius: 9.650208
+--- !u!114 &3417522812025805470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336810724437783972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae46c1461d24dff46a3dbfa5d9722a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  maxSpeed: 8
 --- !u!1 &8624431156722761357
 GameObject:
   m_ObjectHideFlags: 0
@@ -2287,7 +2335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6538069068627055037}
   - component: {fileID: 8064503718642174686}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2365,11 +2413,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1272588821890150997, guid: e63ab09caab1b8d4f898da74807591f9, type: 3}
       propertyPath: maxRotation
-      value: -15.7
+      value: 344.3
       objectReference: {fileID: 0}
     - target: {fileID: 1272588821890150997, guid: e63ab09caab1b8d4f898da74807591f9, type: 3}
       propertyPath: minRotation
-      value: -164.5
+      value: 195.5
       objectReference: {fileID: 0}
     - target: {fileID: 1281205755073728908, guid: e63ab09caab1b8d4f898da74807591f9, type: 3}
       propertyPath: m_Name
@@ -2525,6 +2573,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4186631216441539485}
     m_Modifications:
+    - target: {fileID: 1272588821890150997, guid: e63ab09caab1b8d4f898da74807591f9, type: 3}
+      propertyPath: maxRotation
+      value: 434.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1272588821890150997, guid: e63ab09caab1b8d4f898da74807591f9, type: 3}
+      propertyPath: minRotation
+      value: 285.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1281205755073728908, guid: e63ab09caab1b8d4f898da74807591f9, type: 3}
       propertyPath: m_Name
       value: LeftTurret
