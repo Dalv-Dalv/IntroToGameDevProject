@@ -111,7 +111,9 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
         if (playerObj.TryGetComponent(out PlayerMovement movement)) {
             movement.SetPhysicsRigidbody(proxyRb);
         }
-
+        if (playerObj.TryGetComponent(out SquashAndStretch squash)) {
+            squash.SetPhysicsRigidbody(proxyRb);
+        }
         activePlayers.Add(new PlayerProxyPair {
             visualPlayer = playerObj.transform,
             physicsProxy = proxyObj.transform
