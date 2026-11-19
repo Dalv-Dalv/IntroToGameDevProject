@@ -1889,10 +1889,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementModule
   maxSpeed: 1000
---- !u!1 &8624431156722761357
-GameObject:
 --- !u!114 &3539251037841692872
 MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336810724437783972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 589010cb3c1338bbb8d7de52e406c46e, type: 3}
+  m_Name: WeaponConsole
+  m_EditorClassIdentifier: 
+  crashLayers:
+    serializedVersion: 2
+    m_Bits: 1
+--- !u!1 &8624431156722761357
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1902,7 +1915,7 @@ MonoBehaviour:
   - component: {fileID: 6693343377829188257}
   - component: {fileID: 3309512535600362043}
   m_Layer: 0
-  m_Name: WeaponConsole
+  m_Name: 
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1984,12 +1997,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
-  m_GameObject: {fileID: 8336810724437783972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 589010cb3c1338bbb8d7de52e406c46e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ShipCrashDetector
-  crashLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
