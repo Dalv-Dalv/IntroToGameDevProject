@@ -200,8 +200,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquashAndStretch
   rb: {fileID: 82167134047158378}
-  deformationMultiplier: 0.5
-  maxDeformation: 0.5
+  deformationMultiplier: 0.1
+  maxDeformation: 0.15
   dynamics:
     f: 10.58
     z: 0.5
