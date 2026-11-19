@@ -18,10 +18,10 @@ TagManager:
   - ProxySpaceship
   - OneWayPlatform
   - Ladder
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - EnemyProjectile
+  - ShipProjectile
+  - Pickup
   - 
   - 
   - 
