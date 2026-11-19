@@ -26,6 +26,10 @@ public class EnemyMover : MonoBehaviour {
     private Vector2 spawnPoint;
     private Vector2 patrolPoint;
     private float patrolGiveUpTime;
+    private float steeringPausedUntil = -1f;
+
+    // True while steering is paused (e.g. knockback) - physics + damping move the body instead
+    public bool IsSteeringPaused => Time.time < steeringPausedUntil;
 
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -47,6 +51,11 @@ public class EnemyMover : MonoBehaviour {
         ReachedPatrolPoint = false;
     }
 
+    // Stop steering for a while so an external push (knockback) can play out
+    public void PauseSteering(float seconds) {
+        steeringPausedUntil = Mathf.Max(steeringPausedUntil, Time.time + seconds);
+    }
+
     void FixedUpdate() {
         // Level over (or no level at all) -> freeze in place
         var lm = LevelManager.Instance;
@@ -54,6 +63,8 @@ public class EnemyMover : MonoBehaviour {
             rb.linearVelocity = Vector2.zero;
             return;
         }
+
+        if (IsSteeringPaused) return;
 
         var state = brain != null ? brain.CurrentState : EnemyBrain.State.Idle;
 

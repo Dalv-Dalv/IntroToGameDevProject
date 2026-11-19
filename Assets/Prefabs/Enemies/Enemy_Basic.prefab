@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 396480815795421944}
   - component: {fileID: 7242303072025265046}
   - component: {fileID: 3113946480357837024}
+  - component: {fileID: 4473865580759776662}
   m_Layer: 8
   m_Name: Enemy_Basic
   m_TagString: Untagged
@@ -191,6 +192,10 @@ MonoBehaviour:
   arriveDistance: 0.4
   slowDownDistance: 1.5
   maxPatrolTime: 6
+  chaseSpeed: 6
+  chaseAcceleration: 10
+  chaseStopDistance: 1
+  chaseSlowDownDistance: 3
 --- !u!114 &3113946480357837024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,3 +216,20 @@ MonoBehaviour:
     m_Bits: 65
   idleTimeRange: {x: 1, y: 2.5}
   logStateChanges: 1
+--- !u!114 &4473865580759776662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811990694135543822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61760ffd86176c14cbb42d36cae58a3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFeedback
+  spriteRenderer: {fileID: 4945689936758096153}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.1
+  knockbackImpulse: 7
+  steeringPause: 0.3
