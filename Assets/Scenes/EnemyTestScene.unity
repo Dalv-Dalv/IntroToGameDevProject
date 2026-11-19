@@ -251,6 +251,101 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5126710596199480168, guid: 86d904b85ef9aae4f8dcbe111dc2b23c, type: 3}
   m_PrefabInstance: {fileID: 241015788}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &371125873
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 371125874}
+  - component: {fileID: 371125875}
+  m_Layer: 0
+  m_Name: EnemySpawner_ShipRing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &371125874
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371125873}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 420142776}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &371125875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371125873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4038d0705f561a64bbadf4a7fda19722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  entries:
+  - prefab: {fileID: 811990694135543822, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
+    weight: 1
+  maxAlive: 3
+  totalToSpawn: 0
+  initialDelay: 1
+  spawnInterval: 2
+  aroundShip: 1
+  spawnRadius: 6
+  shipRingDistance: {x: 18, y: 24}
+  minDistanceFromHull: 8
+  activationDistance: 0
+  clearance: 0.8
+  blockingLayers:
+    serializedVersion: 2
+    m_Bits: 8513
+  placementTries: 10
+  container: {fileID: 0}
+--- !u!1 &420142775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 420142776}
+  m_Layer: 0
+  m_Name: Spawners
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &420142776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 420142775}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1210142995}
+  - {fileID: 371125874}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &475933428
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,6 +895,74 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5126710596199480168, guid: 86d904b85ef9aae4f8dcbe111dc2b23c, type: 3}
   m_PrefabInstance: {fileID: 1202426440}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1210142994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1210142995}
+  - component: {fileID: 1210142996}
+  m_Layer: 0
+  m_Name: EnemySpawner_Area
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1210142995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210142994}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 45, y: -35, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 420142776}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1210142996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210142994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4038d0705f561a64bbadf4a7fda19722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  entries:
+  - prefab: {fileID: 811990694135543822, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
+    weight: 3
+  - prefab: {fileID: 4174231426927916540, guid: 0853ef1b52538404084798be60879965, type: 3}
+    weight: 1
+  - prefab: {fileID: 1015663881743488737, guid: 6a9effce4b048b9489762d17a30f58a8, type: 3}
+    weight: 1
+  - prefab: {fileID: 7101429863261581479, guid: 86d904b85ef9aae4f8dcbe111dc2b23c, type: 3}
+    weight: 1
+  maxAlive: 3
+  totalToSpawn: 0
+  initialDelay: 1
+  spawnInterval: 3
+  aroundShip: 0
+  spawnRadius: 6
+  shipRingDistance: {x: 18, y: 24}
+  minDistanceFromHull: 8
+  activationDistance: 25
+  clearance: 0.8
+  blockingLayers:
+    serializedVersion: 2
+    m_Bits: 8513
+  placementTries: 10
+  container: {fileID: 0}
 --- !u!1 &1323711651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1441,7 +1604,7 @@ MonoBehaviour:
   maxHealth: 100
   acceptedTypes: 22
   destroyOnDeath: 0
-  invulnerabilityTime: 0.2
+  invulnerabilityTime: 0
 --- !u!114 &1925011932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1532,3 +1695,4 @@ SceneRoots:
   - {fileID: 594729715}
   - {fileID: 475933429}
   - {fileID: 1323711652}
+  - {fileID: 420142776}
