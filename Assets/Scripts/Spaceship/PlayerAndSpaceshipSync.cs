@@ -7,7 +7,7 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
     [SerializeField] Transform interiorRoot;
     [SerializeField] Transform localSpawnPoint;
 
-    [SerializeField] LayerMask proxyPlayerLayer;
+    [SerializeField] LayerMask proxySpaceshipLayer;
 
     readonly List<PlayerProxyPair> activePlayers = new List<PlayerProxyPair>();
     Vector3 interiorLocalOffset;
@@ -74,6 +74,8 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
         foreach (SpriteRenderer sr in staticRoomObj.GetComponentsInChildren<SpriteRenderer>(true)) Object.Destroy(sr);
         foreach (SpaceshipController module in staticRoomObj.GetComponentsInChildren<SpaceshipController>(true)) Object.Destroy(module);
         foreach (Collider2D col in staticRoomObj.GetComponentsInChildren<Collider2D>(true)) {
+            int layerIndex = Mathf.RoundToInt(Mathf.Log(proxySpaceshipLayer.value, 2));
+            col.gameObject.layer = Mathf.Clamp(layerIndex, 0, 31);
             if (col.isTrigger) Object.Destroy(col);
         }
     }
@@ -83,7 +85,7 @@ public class PlayerAndSpaceshipSync : MonoBehaviour {
 
         GameObject proxyObj = new GameObject($"{playerObj.name}_PhysicsProxy");
         proxyObj.transform.position = staticSpawnPosition;
-        proxyObj.layer = proxyPlayerLayer;
+        proxyObj.layer = playerObj.layer;
 
         Rigidbody2D playerRb = playerObj.GetComponent<Rigidbody2D>();
         Rigidbody2D proxyRb = proxyObj.AddComponent<Rigidbody2D>();

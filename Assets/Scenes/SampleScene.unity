@@ -1095,6 +1095,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4442598192518366678, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      propertyPath: proxySpaceshipLayer.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
     - target: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
       propertyPath: m_Name
       value: Spaceship
