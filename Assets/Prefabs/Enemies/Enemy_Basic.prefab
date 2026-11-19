@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 7242303072025265046}
   - component: {fileID: 3113946480357837024}
   - component: {fileID: 4473865580759776662}
+  - component: {fileID: 6416937836171012027}
+  - component: {fileID: 3626707771175294529}
   m_Layer: 13
   m_Name: Enemy_Basic
   m_TagString: Untagged
@@ -174,6 +176,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Damageable
   maxHealth: 30
+  acceptedTypes: -1
+  destroyOnDeath: 1
+  invulnerabilityTime: 0
 --- !u!114 &7242303072025265046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,16 +191,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3dae7e19152c242a285ba935c0040a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMover
-  patrolRadius: 4
-  patrolSpeed: 2.5
   acceleration: 6
   arriveDistance: 0.4
   slowDownDistance: 1.5
-  maxPatrolTime: 6
-  chaseSpeed: 6
-  chaseAcceleration: 10
-  chaseStopDistance: 1
-  chaseSlowDownDistance: 3
 --- !u!114 &3113946480357837024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,7 +213,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 321
   idleTimeRange: {x: 1, y: 2.5}
-  logStateChanges: 1
+  patrolRadius: 4
+  patrolSpeed: 2.5
+  maxPatrolTime: 6
+  logStateChanges: 0
 --- !u!114 &4473865580759776662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,8 +229,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61760ffd86176c14cbb42d36cae58a3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFeedback
-  spriteRenderer: {fileID: 4945689936758096153}
-  flashColor: {r: 1, g: 1, b: 1, a: 1}
-  flashDuration: 0.1
   knockbackImpulse: 7
   steeringPause: 0.3
+--- !u!114 &6416937836171012027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811990694135543822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123702eac02a6994c953281ba8b63ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  renderers:
+  - {fileID: 4945689936758096153}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.1
+  flashOnBlocked: 1
+  blockedColor: {r: 0.4, g: 0.8, b: 1, a: 1}
+--- !u!114 &3626707771175294529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811990694135543822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 914eaa2077815404fa19df5b016c685f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ApproachBehavior
+  speed: 6
+  acceleration: 10
+  stopDistance: 1
+  slowDownDistance: 3

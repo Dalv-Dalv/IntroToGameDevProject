@@ -437,6 +437,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!212 &1129340700 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 6790218723688555428, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+  m_PrefabInstance: {fileID: 1925011917}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1155902615
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,9 +656,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1323711652}
     m_Modifications:
+    - target: {fileID: 396480815795421944, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
+      propertyPath: acceptedTypes
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 811990694135543822, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
       propertyPath: m_Name
-      value: Enemy_B_001
+      value: Enemy_ModuleOnly
       objectReference: {fileID: 0}
     - target: {fileID: 3381114743134811073, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -694,6 +703,18 @@ PrefabInstance:
     - target: {fileID: 3381114743134811073, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4945689936758096153, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
+      propertyPath: m_Color.b
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4945689936758096153, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 4945689936758096153, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -841,6 +862,21 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1925011921}
+    - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1925011927}
+    - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1925011926}
+    - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1925011925}
+    - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1925011924}
+    - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1925011923}
   m_SourcePrefab: {fileID: 100100000, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
 --- !u!50 &1925011918 stripped
 Rigidbody2D:
@@ -872,6 +908,7 @@ MonoBehaviour:
   damageKey: 25
   damage: 10
   radius: 12
+  damageType: 1
 --- !u!114 &1925011922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -884,6 +921,83 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9b3eb6c6c4a03f448062c2a7385f7be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DebugShipDriver
+--- !u!114 &1925011923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925011919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a0aa91256525cf4a8f7d62a6b597ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugDamager
+  damageKey: 27
+  damage: 10
+  radius: 12
+  damageType: 8
+--- !u!114 &1925011924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925011919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82c7e1194e36fea46a359fbf5c570b10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugSelfDamage
+  damageKey: 22
+  damage: 25
+  damageType: 2
+--- !u!114 &1925011925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925011919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 123702eac02a6994c953281ba8b63ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageFlash
+  renderers:
+  - {fileID: 1129340700}
+  flashColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+  flashDuration: 0.15
+  flashOnBlocked: 1
+  blockedColor: {r: 0.4, g: 0.8, b: 1, a: 1}
+--- !u!114 &1925011926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925011919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5373e6be14310f448253376b945c815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FailLevelOnDeath
+--- !u!114 &1925011927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925011919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb4f30d32ee413742994508211330ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Damageable
+  maxHealth: 100
+  acceptedTypes: 22
+  destroyOnDeath: 0
+  invulnerabilityTime: 0.2
 --- !u!1001 &1974782999
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -895,6 +1009,10 @@ PrefabInstance:
     - target: {fileID: 811990694135543822, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
       propertyPath: m_Name
       value: Enemy_C_BehindWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 3113946480357837024, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
+      propertyPath: patrolRadius
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3381114743134811073, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -935,10 +1053,6 @@ PrefabInstance:
     - target: {fileID: 3381114743134811073, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7242303072025265046, guid: 33c09755e312e6b46bcbbdeb0424cde9, type: 3}
-      propertyPath: patrolRadius
-      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
