@@ -1,9 +1,9 @@
 using UnityEngine;
 
 public class V2SecondOrderDynamics {
-    private Vector2 xp;
-    private Vector2 y, yd;
-    private float k1, k2, k3;
+    float k1, k2, k3;
+    Vector2 xp;
+    Vector2 y, yd;
 
     public V2SecondOrderDynamics(float f, float z, float r, Vector2 x0) {
         ChangeParameters(f, z, r);
@@ -20,7 +20,7 @@ public class V2SecondOrderDynamics {
     }
 
     public Vector2 Update(float dt, Vector2 x, Vector2 xd) {
-        var k2Stable = Mathf.Max(k2, 1.1f * (dt * dt / 4 + dt * k1 / 2));
+        float k2Stable = Mathf.Max(k2, 1.1f * (dt * dt / 4 + dt * k1 / 2));
         y += dt * yd;
         yd += dt * (x + k3 * xd - y - k1 * yd) / k2Stable;
         return y;

@@ -1,9 +1,9 @@
 using UnityEngine;
 
 public class V3SecondOrderDynamics {
-    private Vector3 xp;
-    private Vector3 y, yd;
-    private float k1, k2, k3;
+    float k1, k2, k3;
+    Vector3 xp;
+    Vector3 y, yd;
 
     public V3SecondOrderDynamics(float f, float z, float r, Vector3 x0) {
         ChangeParameters(f, z, r);
@@ -14,7 +14,7 @@ public class V3SecondOrderDynamics {
 
     public void ChangeParameters(float f, float z, float r) {
         k1 = z / (Mathf.PI * f);
-        k2 = 1f / ((2f * Mathf.PI * f) * (2f * Mathf.PI * f));
+        k2 = 1f / (2f * Mathf.PI * f * (2f * Mathf.PI * f));
         k3 = r * z / (2f * Mathf.PI * f);
     }
 

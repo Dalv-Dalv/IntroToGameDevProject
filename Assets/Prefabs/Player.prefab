@@ -93,7 +93,7 @@ MonoBehaviour:
   groundCheckRadius: 0.46
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 768
   hangTime: 0.15
   jumpBufferDuration: 0.15
 --- !u!58 &4040709803589994341

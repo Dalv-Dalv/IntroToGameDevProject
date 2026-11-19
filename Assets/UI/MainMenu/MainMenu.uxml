@@ -1,0 +1,31 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="MainMenu.uss" />
+    <ui:VisualElement name="screen" class="screen">
+        <ui:VisualElement name="backdrop" class="fill" picking-mode="Ignore" />
+
+        <ui:VisualElement name="home" class="fill page">
+            <ui:Label text="LUMENS" class="title" />
+            <ui:Label text="IN A DANGEROUS SPACE" class="subtitle" />
+            <ui:VisualElement class="menu">
+                <ui:Button name="play" text="Play" class="menu-item" />
+                <ui:Button name="controls" text="Controls" class="menu-item" />
+                <ui:Button name="quit" text="Quit" class="menu-item" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="settings" class="fill page hidden">
+            <ui:VisualElement class="panel">
+                <ui:Label text="Controls" class="page-title" />
+                <ui:VisualElement name="profiles" class="tabs" />
+                <ui:VisualElement name="bindings" />
+                <ui:Label name="status" class="status" />
+                <ui:VisualElement class="settings-footer">
+                    <ui:Button name="back" text="Back" class="text-button" />
+                    <ui:Button name="reset" text="Reset to defaults" class="text-button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="hints" class="hints" picking-mode="Ignore" />
+    </ui:VisualElement>
+</ui:UXML>
