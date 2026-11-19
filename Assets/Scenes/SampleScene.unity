@@ -182,7 +182,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 14
+  orthographic size: 27.49
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -836,26 +836,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 260459895017637789, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 812593334868605043, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_EditorClassIdentifier
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1331883689708830271, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1947131621585113816, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2669461624795553344, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4186631216441539485, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.9
@@ -896,58 +876,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4338591792050826952, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_Mass
-      value: 10.36
-      objectReference: {fileID: 0}
-    - target: {fileID: 4338591792050826952, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_LinearDamping
-      value: 2.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 5406405511464427676, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5407182446977945075, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6648308367277058061, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6874948853647270580, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7620151255049306261, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: spaceshipController
-      value: 
-      objectReference: {fileID: 1022624838}
     - target: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
       propertyPath: m_Name
       value: Spaceship
       objectReference: {fileID: 0}
-    - target: {fileID: 8584989400280623836, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8899960104894579283, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8943171316628683225, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 812593334868605043, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1022624838}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
 --- !u!50 &8644129389361841054 stripped
 Rigidbody2D:

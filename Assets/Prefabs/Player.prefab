@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2261792084775425001}
   - component: {fileID: 4040709803589994341}
   - component: {fileID: 82167134047158378}
+  - component: {fileID: 4932706723845835752}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -91,7 +92,7 @@ MonoBehaviour:
   groundCheckRadius: 0.46
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 768
   hangTime: 0.15
   jumpBufferDuration: 0.15
 --- !u!58 &4040709803589994341

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public struct DynamicsParams {
     [Tooltip("Frequency")] [Range(0.001f, 12f)]
     public float f;

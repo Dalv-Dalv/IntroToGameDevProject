@@ -5,18 +5,18 @@ public class SpaceshipController : MonoBehaviour {
     protected SpaceshipModule spaceshipController;
 
     [Tooltip("Optional: Transform where the player is aligned horizontally when operating this module.")] [SerializeField]
-    private Transform standPoint;
+    Transform standPoint;
 
     public PlayerInteract CurrentOperator { get; private set; }
-    public bool IsOccupied => CurrentOperator != null;
+
+    public bool IsOccupied {
+        get {
+            return CurrentOperator;
+        }
+    }
 
 
     public Transform VisualTransform { get; private set; }
-
-    public virtual void Initialize(SpaceshipModule controller, Transform visualTransform) {
-        spaceshipController = controller;
-        VisualTransform = visualTransform;
-    }
 
     protected virtual void Awake() {
         if (spaceshipController == null) {
@@ -25,6 +25,19 @@ public class SpaceshipController : MonoBehaviour {
         if (VisualTransform == null) {
             VisualTransform = transform;
         }
+    }
+
+#if UNITY_EDITOR
+    protected virtual void OnValidate() {
+        if (spaceshipController == null) {
+            spaceshipController = GetComponentInParent<SpaceshipModule>();
+        }
+    }
+#endif
+
+    public virtual void Initialize(SpaceshipModule controller, Transform visualTransform) {
+        spaceshipController = controller;
+        VisualTransform = visualTransform;
     }
 
     public bool TryOccupy(PlayerInteract player) {
@@ -61,13 +74,6 @@ public class SpaceshipController : MonoBehaviour {
     protected virtual void OnOperatorEntered(PlayerInteract player) { }
     protected virtual void OnOperatorExited(PlayerInteract player) {
         spaceshipController?.SetMoveInput(Vector2.zero);
+        spaceshipController?.SetInteractInput(false);
     }
-
-#if UNITY_EDITOR
-    protected virtual void OnValidate() {
-        if (spaceshipController == null) {
-            spaceshipController = GetComponentInParent<SpaceshipModule>();
-        }
-    }
-#endif
 }

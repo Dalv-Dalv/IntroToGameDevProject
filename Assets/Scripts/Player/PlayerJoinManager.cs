@@ -20,7 +20,7 @@ public class PlayerJoinManager : MonoBehaviour {
             if (gamepad.startButton.wasPressedThisFrame && !PlayerRoster.UsesDevice(gamepad))
                 JoinPlayer("Gamepad", gamepad);
 
-        var kb = Keyboard.current;
+        Keyboard kb = Keyboard.current;
 
         if (kb == null) return;
 

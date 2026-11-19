@@ -2,147 +2,127 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAndSpaceshipSync : MonoBehaviour {
-    [Header("Setari Interior (De pe aceasta nava)")]
-    [Tooltip("Trage aici obiectul copil 'Interior' care contine platformele, peretii si consolele")]
-    [SerializeField]
-    private Transform interiorCollidersRoot;
+    static int shipInstanceCounter;
 
-    [Tooltip("Optional: Obiect gol pus in Interior unde vrei sa apara jucatorii")] [SerializeField]
-    private Transform localSpawnPoint;
+    [SerializeField] Transform interiorRoot;
+    [SerializeField] Transform localSpawnPoint;
 
-    private Transform staticInteriorTransform;
-    private Vector3 generatedSpawnPosition;
-    private static int shipInstanceCounter = 0;
+    [SerializeField] LayerMask proxySpaceshipLayer;
 
-    private class SyncedPlayer {
-        public Transform physicsPlayer;
-        public Transform visualDummy;
-        public SpriteRenderer realSprite;
-        public SpriteRenderer dummySprite;
-    }
+    readonly List<PlayerProxyPair> activePlayers = new List<PlayerProxyPair>();
+    Vector3 interiorLocalOffset;
+    Quaternion interiorLocalRotation;
+    PlayerJoinManager playerJoinManager;
 
-    private List<SyncedPlayer> syncedPlayers = new List<SyncedPlayer>();
-    private PlayerJoinManager playerJoinManager;
+    Transform staticPhysicsRoom;
+    Vector3 staticSpawnPosition;
 
     void Awake() {
-        GenerateStaticProxyAutomatically();
-        playerJoinManager = FindAnyObjectByType<PlayerJoinManager>();
+        BuildStaticCollisionRoom();
+
+        playerJoinManager = Object.FindAnyObjectByType<PlayerJoinManager>();
         if (playerJoinManager != null) {
             playerJoinManager.OnPlayerJoined += HandlePlayerJoined;
         }
     }
 
-    private void GenerateStaticProxyAutomatically() {
-        if (interiorCollidersRoot == null) {
-            Debug.LogError("Nu ai asignat 'Interior Colliders Root' pe PlayerAndSpaceshipSync!", this);
-            return;
-        }
-
-        shipInstanceCounter++;
-
-        // 1. Hidden position for the static ship (where players will physically be)
-        Vector3 hiddenPosition = new Vector3(0, -5000f - (shipInstanceCounter * 500f), 0);
-
-        // 2. Clone the interior for static physics
-        GameObject staticCopy = Instantiate(interiorCollidersRoot.gameObject, hiddenPosition, Quaternion.identity);
-        staticCopy.name = $"{gameObject.name}_StaticPhysicsInterior";
-        staticInteriorTransform = staticCopy.transform;
-
-        // 3. Calculate spawn position in static copy
-        if (localSpawnPoint != null) {
-            Vector3 relativeSpawn = interiorCollidersRoot.InverseTransformPoint(localSpawnPoint.position);
-            generatedSpawnPosition = staticInteriorTransform.TransformPoint(relativeSpawn);
-        } else {
-            generatedSpawnPosition = staticInteriorTransform.position;
-        }
-
-        // 4. Link static modules to their visual counterparts on the moving ship
-        SpaceshipModule shipController = GetComponent<SpaceshipModule>();
-        SpaceshipController[] visualModules = interiorCollidersRoot.GetComponentsInChildren<SpaceshipController>(true);
-        SpaceshipController[] staticModules = staticCopy.GetComponentsInChildren<SpaceshipController>(true);
-
-        for (int i = 0; i < staticModules.Length; i++) {
-            Transform visualCounterpart = (i < visualModules.Length) ? visualModules[i].transform : null;
-            staticModules[i].Initialize(shipController, visualCounterpart);
-        }
-
-        // 5. Disable interactive modules and their triggers on the moving visual ship
-        foreach (var visualModule in visualModules) {
-            visualModule.enabled = false;
-            if (visualModule.TryGetComponent<Collider2D>(out var triggerCol)) {
-                triggerCol.enabled = false;
-            }
-        }
-
-        // 6. Disable visuals on the static physics copy
-        foreach (var sr in staticCopy.GetComponentsInChildren<SpriteRenderer>(true)) {
-            sr.enabled = false;
-        }
-    }
-
-    private void OnDestroy() {
-        if (playerJoinManager != null) {
-            playerJoinManager.OnPlayerJoined -= HandlePlayerJoined;
-        }
-        if (staticInteriorTransform != null) {
-            Destroy(staticInteriorTransform.gameObject);
-        }
-    }
-
-    private void HandlePlayerJoined(GameObject playerObj) {
-        // Move the real player to the invisible static ship
-        playerObj.transform.position = generatedSpawnPosition;
-
-        if (playerObj.TryGetComponent<Rigidbody2D>(out var rb)) {
-            rb.linearVelocity = Vector2.zero;
-        }
-
-
-        // Create visual dummy on the flying ship (this.transform) and sync it with the real player in the static ship
-        GameObject dummyObj = new GameObject($"{playerObj.name}_VisualDummy");
-        dummyObj.transform.SetParent(this.transform, false);
-
-        SpriteRenderer realSr = playerObj.GetComponentInChildren<SpriteRenderer>();
-        SpriteRenderer dummySr = dummyObj.AddComponent<SpriteRenderer>();
-
-        if (realSr != null) {
-            dummySr.sprite = realSr.sprite;
-            dummySr.color = realSr.color;
-            dummySr.sortingLayerID = realSr.sortingLayerID;
-            dummySr.sortingOrder = realSr.sortingOrder;
-            realSr.enabled = false;
-        }
-
-        syncedPlayers.Add(new SyncedPlayer {
-            physicsPlayer = playerObj.transform,
-            visualDummy = dummyObj.transform,
-            realSprite = realSr,
-            dummySprite = dummySr
-        });
-    }
-
     void LateUpdate() {
-        if (staticInteriorTransform == null) return;
+        if (!staticPhysicsRoom) return;
 
-        for (int i = syncedPlayers.Count - 1; i >= 0; i--) {
-            var pair = syncedPlayers[i];
-
-            if (pair.physicsPlayer == null) {
-                if (pair.visualDummy != null) Destroy(pair.visualDummy.gameObject);
-                syncedPlayers.RemoveAt(i);
+        for (int i = activePlayers.Count - 1; i >= 0; i--) {
+            PlayerProxyPair pair = activePlayers[i];
+            if (!pair.visualPlayer) {
+                if (pair.physicsProxy) Object.Destroy(pair.physicsProxy.gameObject);
+                activePlayers.RemoveAt(i);
                 continue;
             }
 
-
-            pair.visualDummy.localPosition = staticInteriorTransform.InverseTransformPoint(pair.physicsPlayer.position);
-            pair.visualDummy.localRotation = Quaternion.Inverse(staticInteriorTransform.rotation) * pair.physicsPlayer.rotation;
-
-            if (pair.realSprite != null && pair.dummySprite != null) {
-                pair.visualDummy.localScale = pair.realSprite.transform.lossyScale;
-                pair.dummySprite.sprite = pair.realSprite.sprite;
-                pair.dummySprite.flipX = pair.realSprite.flipX;
-                pair.dummySprite.flipY = pair.realSprite.flipY;
-            }
+            Vector3 relPos = staticPhysicsRoom.InverseTransformPoint(pair.physicsProxy.position);
+            pair.visualPlayer.localPosition = interiorLocalOffset + interiorLocalRotation * relPos;
+            pair.visualPlayer.localRotation = interiorLocalRotation;
         }
+    }
+
+    void OnDestroy() {
+        if (playerJoinManager != null) playerJoinManager.OnPlayerJoined -= HandlePlayerJoined;
+        if (staticPhysicsRoom != null) Object.Destroy(staticPhysicsRoom.gameObject);
+        foreach (PlayerProxyPair pair in activePlayers) {
+            if (pair.physicsProxy != null) Object.Destroy(pair.physicsProxy.gameObject);
+        }
+    }
+
+    void BuildStaticCollisionRoom() {
+        if (interiorRoot == null) return;
+
+        shipInstanceCounter++;
+        interiorLocalOffset = transform.InverseTransformPoint(interiorRoot.position);
+        interiorLocalRotation = Quaternion.Inverse(transform.rotation) * interiorRoot.rotation;
+
+        Vector3 hiddenPosition = new Vector3(0, -5000f - shipInstanceCounter * 500f, 0);
+
+        GameObject staticRoomObj = Object.Instantiate(interiorRoot.gameObject, hiddenPosition, Quaternion.identity);
+        staticRoomObj.name = $"{gameObject.name}_PhysicsWallsOnly";
+        staticPhysicsRoom = staticRoomObj.transform;
+
+        if (localSpawnPoint != null) {
+            Vector3 relSpawn = interiorRoot.InverseTransformPoint(localSpawnPoint.position);
+            staticSpawnPosition = staticPhysicsRoom.TransformPoint(relSpawn);
+        } else {
+            staticSpawnPosition = staticPhysicsRoom.position;
+        }
+
+        foreach (SpriteRenderer sr in staticRoomObj.GetComponentsInChildren<SpriteRenderer>(true)) Object.Destroy(sr);
+        foreach (SpaceshipController module in staticRoomObj.GetComponentsInChildren<SpaceshipController>(true)) Object.Destroy(module);
+        foreach (Collider2D col in staticRoomObj.GetComponentsInChildren<Collider2D>(true)) {
+            int layerIndex = Mathf.RoundToInt(Mathf.Log(proxySpaceshipLayer.value, 2));
+            col.gameObject.layer = Mathf.Clamp(layerIndex, 0, 31);
+            if (col.isTrigger) Object.Destroy(col);
+        }
+    }
+
+    public void HandlePlayerJoined(GameObject playerObj) {
+        if (activePlayers.Exists(p => p.visualPlayer == playerObj.transform)) return;
+
+        GameObject proxyObj = new GameObject($"{playerObj.name}_PhysicsProxy");
+        proxyObj.transform.position = staticSpawnPosition;
+        proxyObj.layer = playerObj.layer;
+
+        Rigidbody2D playerRb = playerObj.GetComponent<Rigidbody2D>();
+        Rigidbody2D proxyRb = proxyObj.AddComponent<Rigidbody2D>();
+        if (playerRb) {
+            proxyRb.mass = playerRb.mass;
+            proxyRb.linearDamping = playerRb.linearDamping;
+            proxyRb.angularDamping = playerRb.angularDamping;
+            proxyRb.gravityScale = playerRb.gravityScale;
+            proxyRb.constraints = playerRb.constraints;
+            proxyRb.interpolation = RigidbodyInterpolation2D.Interpolate;
+
+            playerRb.bodyType = RigidbodyType2D.Kinematic;
+            playerRb.linearVelocity = Vector2.zero;
+        }
+
+        CircleCollider2D playerCircle = playerObj.GetComponent<CircleCollider2D>();
+        if (playerCircle) {
+            CircleCollider2D proxyCircle = proxyObj.AddComponent<CircleCollider2D>();
+            proxyCircle.radius = playerCircle.radius;
+            proxyCircle.offset = playerCircle.offset;
+            proxyCircle.sharedMaterial = playerCircle.sharedMaterial;
+        }
+
+        playerObj.transform.SetParent(transform, false);
+
+        if (playerObj.TryGetComponent(out PlayerMovement movement)) {
+            movement.SetPhysicsRigidbody(proxyRb);
+        }
+
+        activePlayers.Add(new PlayerProxyPair {
+            visualPlayer = playerObj.transform,
+            physicsProxy = proxyObj.transform
+        });
+    }
+
+    class PlayerProxyPair {
+        public Transform physicsProxy;
+        public Transform visualPlayer;
     }
 }
