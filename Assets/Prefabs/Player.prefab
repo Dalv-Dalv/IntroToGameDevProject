@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2261792084775425001}
   - component: {fileID: 4040709803589994341}
   - component: {fileID: 82167134047158378}
+  - component: {fileID: 4932706723845835752}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -81,17 +82,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   playerInput: {fileID: 3678568568256947458}
   rb: {fileID: 82167134047158378}
-  moveSpeed: 10
+  moveSpeed: 9
   jumpForce: 10
   dynamics:
     f: 3.08
     z: 0.99
     r: 1.77
   groundCheck: {fileID: 3303987805508022433}
-  groundCheckRadius: 0.46
+  groundCheckRadius: 0.69
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  oneWayPlatformMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  dropThroughDuration: 0.25
+  ladderMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  climbSpeed: 8
+  ladderHorizontalMultiplier: 0.9
+  ladderSnapSpeed: 14
   hangTime: 0.15
   jumpBufferDuration: 0.15
 --- !u!58 &4040709803589994341
@@ -104,7 +115,7 @@ CircleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 03f0e16d02ee4964ebd640ae035db721, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -234,7 +245,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7985284283321967579}
@@ -312,8 +323,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquashAndStretch
   rb: {fileID: 82167134047158378}
-  deformationMultiplier: 0.05
-  maxDeformation: 0.2
+  deformationMultiplier: 0.1
+  maxDeformation: 0.15
   dynamics:
     f: 5
     z: 0.25

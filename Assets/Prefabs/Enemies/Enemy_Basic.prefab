@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7242303072025265046}
   - component: {fileID: 3113946480357837024}
   - component: {fileID: 4473865580759776662}
-  m_Layer: 8
+  m_Layer: 13
   m_Name: Enemy_Basic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ MonoBehaviour:
   useLineOfSight: 1
   lineOfSightMask:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 321
   idleTimeRange: {x: 1, y: 2.5}
   logStateChanges: 1
 --- !u!114 &4473865580759776662

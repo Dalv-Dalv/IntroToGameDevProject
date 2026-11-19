@@ -13,12 +13,12 @@ TagManager:
   - UI
   - Ground
   - Player
+  - Spaceship
+  - InnerSpaceship
+  - ProxySpaceship
+  - OneWayPlatform
+  - Ladder
   - Enemy
-  - 
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 

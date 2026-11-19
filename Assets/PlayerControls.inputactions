@@ -62,7 +62,7 @@
                 {
                     "name": "2D Vector",
                     "id": "088cf4c6-f21e-41a1-bf43-7bed59111f26",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -117,7 +117,7 @@
                 {
                     "name": "2D Vector",
                     "id": "c1c87624-7cb9-4e74-a3e2-2972f6b2e02b",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -172,7 +172,7 @@
                 {
                     "name": "2D Vector",
                     "id": "acd3294c-3fd7-4ec9-87b8-9633618ac28a",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -227,7 +227,7 @@
                 {
                     "name": "2D Vector",
                     "id": "100585c0-f54d-41eb-b00b-480fd039c543",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

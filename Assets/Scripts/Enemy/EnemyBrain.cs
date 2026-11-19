@@ -11,7 +11,7 @@ public class EnemyBrain : MonoBehaviour {
     [SerializeField] private float detectRadius = 8f;
     [SerializeField] private float loseRadius = 13f;
     [SerializeField] private bool useLineOfSight = true;
-    [SerializeField] private LayerMask lineOfSightMask = (1 << 0) | (1 << 6); // Default (obstacles) + Ground (hull)
+    [SerializeField] private LayerMask lineOfSightMask = (1 << 0) | (1 << 6) | (1 << 8); // Default (obstacles) + Ground + Spaceship (hull)
 
     [Header("Idle")]
     [SerializeField] private Vector2 idleTimeRange = new Vector2(1f, 2.5f);
@@ -83,7 +83,7 @@ public class EnemyBrain : MonoBehaviour {
         return lm.Ship;
     }
 
-    // Distance to the nearest point of the hull (the ship root is ~16x11 units)
+    // Distance to the nearest point of the hull (root CircleCollider2D, r ~9.65)
     private float DistanceToShip(Rigidbody2D ship) {
         Vector2 pos = transform.position;
         return Vector2.Distance(pos, ship.ClosestPoint(pos));
