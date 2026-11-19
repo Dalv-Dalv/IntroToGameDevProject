@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 4473865580759776662}
   - component: {fileID: 6416937836171012027}
   - component: {fileID: 3626707771175294529}
+  - component: {fileID: 481966860624318107}
   m_Layer: 13
   m_Name: Enemy_Basic
   m_TagString: Untagged
@@ -265,3 +266,20 @@ MonoBehaviour:
   acceleration: 10
   stopDistance: 1
   slowDownDistance: 3
+--- !u!114 &481966860624318107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811990694135543822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d20bdfc920a4844eab320dce16ea753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropOnDeath
+  drops:
+  - prefab: {fileID: 8368144439600107719, guid: 581d33d8980fd0c4394bbac0502a4007, type: 3}
+    chance: 1
+    count: {x: 2, y: 3}
+  scatterSpeed: 4

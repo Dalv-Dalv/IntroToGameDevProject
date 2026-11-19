@@ -877,6 +877,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1925011923}
+    - targetCorrespondingSourceObject: {fileID: 8336810724437783972, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1925011932}
   m_SourcePrefab: {fileID: 100100000, guid: d124df0f08565c4488f1bce06ae95f20, type: 3}
 --- !u!50 &1925011918 stripped
 Rigidbody2D:
@@ -998,6 +1001,20 @@ MonoBehaviour:
   acceptedTypes: 22
   destroyOnDeath: 0
   invulnerabilityTime: 0.2
+--- !u!114 &1925011932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925011919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eaaf88433096b5489023bbda2ee3d80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugResourceReceiver
+  capacity: 10
+  showOnScreen: 1
 --- !u!1001 &1974782999
 PrefabInstance:
   m_ObjectHideFlags: 0

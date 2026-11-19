@@ -19,9 +19,9 @@ TagManager:
   - OneWayPlatform
   - Ladder
   - Enemy
-  - 
-  - 
-  - 
+  - EnemyProjectile
+  - ShipProjectile
+  - Pickup
   - 
   - 
   - 
