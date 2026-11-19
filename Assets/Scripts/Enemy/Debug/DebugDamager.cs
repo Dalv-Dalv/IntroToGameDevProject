@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 // Test only: stands in for weapons. Press the key to damage every IDamageable within the radius.
 // Never hits its own body (it sits on the ship). Add several with different keys/types to test filtering.
+// Always includes trigger colliders, so hull-attached enemies are hit too (like a ship module pulse would).
 public class DebugDamager : MonoBehaviour {
     [SerializeField] private Key damageKey = Key.K;
     [SerializeField] private float damage = 10f;
@@ -11,6 +12,7 @@ public class DebugDamager : MonoBehaviour {
     [SerializeField] private DamageType damageType = DamageType.Generic;
 
     private Rigidbody2D ownBody;
+    private readonly List<Collider2D> hits = new List<Collider2D>();
 
     void Awake() {
         ownBody = GetComponentInParent<Rigidbody2D>();
@@ -23,7 +25,10 @@ public class DebugDamager : MonoBehaviour {
         Vector2 center = transform.position;
         var alreadyHit = new HashSet<IDamageable>();
 
-        foreach (var col in Physics2D.OverlapCircleAll(center, radius)) {
+        var filter = new ContactFilter2D { useTriggers = true }; // no layer mask = everything
+        Physics2D.OverlapCircle(center, radius, filter, hits);
+
+        foreach (var col in hits) {
             if (ownBody != null && col.attachedRigidbody == ownBody) continue;
             if (!DamageUtil.TryGetDamageable(col, out var target) || !alreadyHit.Add(target)) continue;
 
