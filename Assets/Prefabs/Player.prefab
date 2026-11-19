@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4040709803589994341}
   - component: {fileID: 82167134047158378}
   - component: {fileID: 4932706723845835752}
-  - component: {fileID: 2111575426977186811}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -141,7 +140,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.75
+  m_Radius: 0.5
 --- !u!50 &82167134047158378
 Rigidbody2D:
   serializedVersion: 5
@@ -187,25 +186,6 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2111575426977186811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 191877860707029800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35d18117d819443fa4bcf7e7a54baea1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SquashAndStretch
-  rb: {fileID: 82167134047158378}
-  deformationMultiplier: 0.1
-  maxDeformation: 0.15
-  dynamics:
-    f: 10.58
-    z: 0.5
-    r: -5
 --- !u!1 &2175706376848028149
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,8 +323,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SquashAndStretch
   rb: {fileID: 82167134047158378}
-  deformationMultiplier: 100
-  maxDeformation: 1
+  deformationMultiplier: 0.1
+  maxDeformation: 0.15
   dynamics:
     f: 5
     z: 0.25
